@@ -1,4 +1,9 @@
-import AStar
 import Node
 
-#class openlist:
+class openList:
+    rootNode = None
+
+    def __init__(self): 
+        #check this!!!
+        self.rootNode = Node.node("","","","","")
+

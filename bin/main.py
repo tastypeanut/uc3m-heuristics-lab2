@@ -1,6 +1,6 @@
 import sys
 import Node
-from Node import node
+import OpenList
 
 def main():
     try:
@@ -8,7 +8,8 @@ def main():
         numlines = sum(1 for line in fileraw)
         filearray = fileraw.read().split('\n')
         obsraw = filearray[0]
-        node1 = node("test", "test", "test", "test", "test")
+        node1 = Node.node("test", "test", "test", "test", "test")
+        op= OpenList.openList()
         print(node1.cost)
     finally:
         fileraw.close()
