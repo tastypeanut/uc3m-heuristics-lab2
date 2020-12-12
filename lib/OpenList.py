@@ -5,5 +5,5 @@ class openList:
 
     def __init__(self): 
         #check this!!!
-        self.rootNode = Node.node("","","","","")
+        self.rootNode = Node.node()
 

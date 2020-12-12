@@ -1,4 +1,5 @@
 import OpenList
+import objects.Satellite
 
 class node:
     cost = None
@@ -8,12 +9,14 @@ class node:
     nextNodeList = None
 
     #constructor
-    def __init__(self, c, h, ev, par, nextN): 
-        self.cost = c
-        self.heuristic= h
-        self.evaluation = ev
-        self.parent = par
-        self.nextNodeList = nextN
+    def __init__(self, *args): 
+        if len(args) == 5:
+            self.cost = args[0]
+            self.heuristic= args[1]
+            self.evaluation = args[2]
+            self.parent = args[3]
+            self.nextNodeList = args[4]
+
 
 
     #method that computes the heuristic
