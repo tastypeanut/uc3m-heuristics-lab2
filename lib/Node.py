@@ -1,12 +1,12 @@
-import OpenList
-import objects.Satellite
+import lib.OpenList as OpenList
+import lib.objects.Satellite as Satellite
 
 class node:
-    cost = None
-    heuristic = None
-    evaluation = None
-    parent = None
-    nextNodeList = None
+    __cost = None
+    __heuristic = None
+    __evaluation = None
+    __parent = None
+    __nextNodeList = None
 
     #list of satellites
     listSat = []
@@ -22,18 +22,18 @@ class node:
     #depending on the number of received parameters
 
         #if a node is received (just 1 single argument)
-        if len(args) == 5:
-            self.cost = args[0]
-            self.heuristic= args[1]
-            self.evaluation = args[2]
-            self.parent = args[3]
-            self.nextNodeList = args[4]
+        if len(args) == 1:
+            self.setCost(args[0].getCost())
+            self.setHeuristic(args[0].getHeuristic())
+            self.setEvaluation(args[0].getEvaluation())
+            self.setParent(args[0].getParent())
+            self.setNextNodeList(args[0].getNextNodeList())
         
         #receiving 3 paremeters: parentNode, list of satellites and list of observations
         if len(args) == 3:
-            self.parent = args[0]
+            self.setParent(args[0])
             self.listSat = args[1]
-            self.listObs = args [2]
+            self.listObs = args[2]
 
 
 
@@ -44,6 +44,48 @@ class node:
 
     #method that checks if the information from another node is equal to the one we have
     #def equals (otherNode):
+
+
+    #SETTERS
+
+ 
+    def setCost(self, cost):
+        self.__cost = cost
+
+    def setHeuristic(self, heuristic):
+        self.__heuristic = heuristic
+
+    def setEvaluation(self, evaluation):
+        self.__evaluation = evaluation
+
+    def setParent(self, parent):
+        self.__parent = parent
+
+    def setNextNodeList(self, nextNodeList):
+        self.__nextNodeList = nextNodeList
+
+
+   
+     #GETTERS
+
+    def getCost(self):
+        return self.__cost
+
+    def getHeuristic(self):
+        return self.__heuristic
+
+    def getEvaluation(self):
+        return self.__evaluation
+
+    def getParent(self):
+        return self.__parent
+
+    def getNextNodeList(self):
+        return self.__nextNodeList
+
+
+
+
 
         
 
