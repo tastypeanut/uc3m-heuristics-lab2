@@ -3,19 +3,58 @@ class observation:
 
 	#each observation is characterized by an id, a variables than indicated whether it has already
 	#been measure or not, the band where it is located, and its location in the x axis (0-12)
-	idNumber = None
-	measured = None
-	band = None
-	position = None
+	__idNumber = None
+	__measured = None
+	__band = None
+	__position = None
 	
 
 #CONSTRUCTOR
 
 #It receives an id, a band and a position
-	def __init__(self, idN, band, pos):
-		self.idNumber = idN
-		#by default, an observation will be initially set to "false"
-		self.measured = False
-		self.band = band
-		self.position = pos
+	def __init__(self, idNumber, band, position):
+		self.setIdNumber(idNumber)
+		self.setMeasured(False)  #by default, an observation will be initially set to "false"
+		self.setBand(band)
+		self.setPosition(position)
 		
+
+
+	#SETTERS
+	
+	def setIdNumber(self, idNumber):
+		self.__idNumber = idNumber
+
+	
+	def setMeasured(self, measured):
+		self.__measured = measured
+
+	
+	def setBand(self, band):
+		self.__band = band
+
+
+	#GETTERS
+
+	def setPosition(self, position):
+		self.__position = position
+
+	def getIdNumber(self, idNumber):
+		self.__idNumber = idNumber
+
+	def getBand(self, band):
+		self.__band = band
+
+	def getPosition(self, position):
+		self.__position = position
+
+	def getMeasured(self, measured):
+		self.__measured = measured
+
+
+
+
+    
+
+
+

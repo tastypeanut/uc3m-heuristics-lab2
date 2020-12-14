@@ -15,7 +15,7 @@ class astar:
     __initialNode = None #initial node of the problem
     __goalNode = None #goal node
     __findGoal = None #this variable is used to check if the goal has been found
-
+   
 
 
     #CONSTRUCTOR
@@ -24,9 +24,9 @@ class astar:
     def __init__(self, printDebug, initialNode, goalNode):
     
         self.printDebug = printDebug
-        self.__initialNode = initialNode
-        self.__goalNode = goalNode
-        self.__findGoal = False #the findGoal variable is set to "false" 
+        self.setInitialNode(initialNode)
+        self.setGoalNode(goalNode)
+        self.setFindGoal(False) #the findGoal variable is set to "false" 
 
     
 
@@ -37,5 +37,47 @@ class astar:
 
 
 
+     #SETTERS
+
+ 
+    def setInitialNode(self, initialNode):
+        self.__initialNode = initialNode
+
+
+ 
+    def setGoalNode(self, goalNode):
+        self.__goalNode = goalNode
+
+
+    def setFindGoal(self, findGoal):
+        self.__findGoal = findGoal
+
+   
+    def setPrintDebug(self, printDebug):
+        printDebug = printDebug
+
+    def setOpenList(self, openList):
+        self.__openList = openList
+
+    def setClosedList(self, closedList):
+        self.__closedList = closedList
+
+
     
         
+     #GETTERS
+
+    def getInitialNode(self):
+        return self.__initialNode
+
+    def getGoalNode(self):
+        return self.__goalNode
+
+    def getOpenList(self):
+        return self.__openList
+
+    def getClosedList(self):
+        return self.__closedList
+
+   
+

@@ -9,10 +9,8 @@ class openlist:
     #CONSTRUCTOR
 
     def __init__(self): 
-        self._rootNode = Node.node()
+        self.setRootNode(Node.node())
 
-
- 
     def insertAtEvaluation(self, newElem):
         newNode = Node.node(newElem)
         posNode = None
@@ -35,7 +33,6 @@ class openlist:
                     break
 
         
-
     #method that extracts the first node from the list and retuns it
     def pullFirst(self):
         node = self._rootNode.getNextNode()
@@ -52,8 +49,6 @@ class openlist:
         newNode.setNextNode(oldNode)
 
 
-
-
      #method that adds a new node at the end of the list
 
     def addLast(self, newElem):
@@ -68,15 +63,23 @@ class openlist:
         else: lastNode.setNextNode(newNode)
 
 
-
     def isEmpty(self):
         return (self._rootNode.getNextNode() == None)
 
 
-
+    def getSize(self):
+        size = 0
+        nodeIt = self._rootNode.getNextNode()
+        while (nodeIt != None):
+            size += 1
+            nodeIt = nodeIt.getNextNode()
+        return size
     
-
+    def getRootNode(self):
+        return self._rootNode
     
+    def setRootNode(self, rootnode):
+        self._rootNode = rootnode
 
 
 

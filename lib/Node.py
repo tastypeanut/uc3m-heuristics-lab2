@@ -1,5 +1,6 @@
 import lib.OpenList as OpenList
 import lib.objects.Satellite as Satellite
+import lib.objects.Observation as Observation
 
 class node:
     __cost = None
@@ -9,10 +10,10 @@ class node:
     __nextNodeList = None
 
     #list of satellites
-    listSat = []
+    listSatellites = []
 
-    #list of obserations that need to be measured
-    listObs = []
+    #list of observations that need to be measured
+    listObservations = []
 
 
     #constructor
@@ -27,7 +28,7 @@ class node:
             self.setHeuristic(args[0].getHeuristic())
             self.setEvaluation(args[0].getEvaluation())
             self.setParent(args[0].getParent())
-            self.setNextNodeList(args[0].getNextNodeList())
+            self.setNextNode(args[0].getNextNode())
         
         #receiving 3 paremeters: parentNode, list of satellites and list of observations
         if len(args) == 3:
@@ -61,7 +62,7 @@ class node:
     def setParent(self, parent):
         self.__parent = parent
 
-    def setNextNodeList(self, nextNodeList):
+    def setNextNode(self, nextNodeList):
         self.__nextNodeList = nextNodeList
 
 
@@ -80,7 +81,7 @@ class node:
     def getParent(self):
         return self.__parent
 
-    def getNextNodeList(self):
+    def getNextNode(self):
         return self.__nextNodeList
 
 
