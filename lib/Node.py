@@ -5,7 +5,7 @@ import lib.objects.Observation as Observation
 class node:
     __cost = None
     __heuristic = None
-    __evaluation = None
+    __evaluation = None      #Evaluation value. It gives preferences when ordering the open list
     __parent = None
     __nextNodeList = None
 
@@ -35,8 +35,8 @@ class node:
         #receiving 3 paremeters: parentNode, list of satellites and list of observations
         if len(args) == 3:
             self.setParent(args[0])
-            self.listSat = args[1]
-            self.listObs = args[2]
+            self.listSatellites = args[1]
+            self.listObservations = args[2]
 
 
 
@@ -64,7 +64,7 @@ class node:
 
     #method that checks if the information from another node is equal to the one we have
     def equals (self,otherNode):
-        
+        #print(len(self.listSatellites))
         #checking that the lists of observations are equal, but looping through through them
         for x in range(len(self.listObservations)):
             if(self.listObservations[x].getIdNumber != otherNode.listObservations[x].getIdNumber ):
@@ -75,6 +75,8 @@ class node:
         for x in range(len(self.listSatellites)):
             if(self.listSatellites[x].getIdNumber != otherNode.listSatellites[x].getIdNumber ):
                 return False
+
+        return True  #otherwise, they are equal, so "true" is returned 
 
 
 
