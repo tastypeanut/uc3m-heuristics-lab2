@@ -25,7 +25,7 @@ class node:
     #depending on the number of received parameters
 
         #if a node is received (just 1 single argument)
-        if len(args) == 1:
+        if len(args) == 1: 
             self.setCost(args[0].getCost())
             self.setHeuristic(args[0].getHeuristic())
             self.setEvaluation(args[0].getEvaluation())
