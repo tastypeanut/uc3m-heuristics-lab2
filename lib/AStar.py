@@ -28,11 +28,13 @@ class astar:
         self.setGoalNode(goalNode)
         self.setFindGoal(False) #the findGoal variable is set to "false" 
 
+
         #computing heuristics and initial costs
 
        # self.computeCosts()        #CORRECT THIS!!!
 
         self.__openList = OpenList.openlist()
+        self.__initialNode =Node.node()                      #CHECK THIS!!!
         self.__openList.insertAtEvaluation(self.__initialNode)
         
         
