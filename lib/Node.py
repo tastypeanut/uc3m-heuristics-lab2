@@ -16,7 +16,9 @@ class node:
     listObservations = []
 
 
-    #constructor
+    #CONSTRUCTOR
+
+
     def __init__(self, *args): 
     
     #in python it is not possible to create several constructors, so we include different cases
@@ -38,13 +40,55 @@ class node:
 
 
 
+
+    #COMPUTE HEURISTIC
+
+
     #method that computes the heuristic
-    def computeHeuristic(self,finalNode):
+    #it receives the final node to where to the heuristics will be calculated and 
+    #the heuristic function that will be employed. There are two options: Manhattan and Hamming distance
+    def computeHeuristic(self,finalNode,heuristicType):
         self.heuristic = 0
+
+        for obs in self.listObservations:
+            if heuristicType == 'manhattan':
+                result = 5
+
+        #Manhattan distance
+        
+
+
+
+    #EQUALS
 
 
     #method that checks if the information from another node is equal to the one we have
-    #def equals (otherNode):
+    def equals (self,otherNode):
+        
+        #checking that the lists of observations are equal, but looping through through them
+        for x in range(len(self.listObservations)):
+            if(self.listObservations[x].getIdNumber != otherNode.listObservations[x].getIdNumber ):
+                return False
+
+        
+        #checking that the lists of satellites are equal, but looping through through them
+        for x in range(len(self.listSatellites)):
+            if(self.listSatellites[x].getIdNumber != otherNode.listSatellites[x].getIdNumber ):
+                return False
+
+
+
+    
+    #COMPUTE EVALUATION
+    
+    #method that executes the evaluation function of the problem for the node
+    def computeEvaluation(self):
+        self.__evaluation = self.__cost + self.__heuristic
+
+
+    
+
+
 
 
     #SETTERS
@@ -68,6 +112,8 @@ class node:
 
    
      #GETTERS
+
+     
 
     def getCost(self):
         return self.__cost

@@ -11,7 +11,11 @@ class openlist:
     def __init__(self): 
         self.setRootNode(Node.node())
 
+
+    #INSERT AT EVALUATION    
+
     def insertAtEvaluation(self, newElem):
+        newElem = Node.node()                    #CHECK THIS!!!
         newNode = Node.node(newElem)
         posNode = None
         nodeIt = self._rootNode.getNextNode()
