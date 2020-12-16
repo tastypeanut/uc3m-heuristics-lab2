@@ -75,7 +75,7 @@ def main():
     l1.append (Satellite.satellite(2,2,2,2))
 
     l3 = []
-    l3.append (Satellite.satellite(3,1,1,1))
+    l3.append (Satellite.satellite(1,1,1,1))
     l3.append (Satellite.satellite(2,2,2,2))
 
 
@@ -87,7 +87,7 @@ def main():
 
     childNode3 = Node.node(parentNode, l1, l2)
     print(len(childNode3.listSatellites))
-    childNode4 = Node.node(parentNode, l1, l2)
+    childNode4 = Node.node(parentNode, l3, l2)
 
     print(childNode3.equals(childNode4))
 

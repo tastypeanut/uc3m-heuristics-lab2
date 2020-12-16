@@ -1,3 +1,4 @@
+import time
 import lib.OpenList as OpenList
 import lib.Node as Node
 
@@ -45,18 +46,49 @@ class astar:
       
         self.__openList.insertAtEvaluation(self.__initialNode)
         
-        
+       
 
         
+
+    #ADD ADJACENT NODE
+
+
+
+
+
+    #ALGORITHM
+
+    #implementation of the A* algorithm
+    def algorithm(self):
+        initialTime = int(round(time.time()))  #this will be used to take the execution time
+
+        currentNode = None  #defining a node
+
+        while not (self.__openList.isEmpty()):    #checking that the open list is not empty
+            currentNode = self.__openList.pullFirst()   #getting the first node from the open list
+            if self.checkNode(currentNode):  #checking that the node has not been expanded
+                self.__closedList.append(currentNode)  #including the node in the closed list
+                if(self.getGoalNode().equals(currentNode)):  #checking if its the goal node
+                    self.setGoalNode(currentNode) 
+                    self.setFindGoal(True)
+                    break                   #as the goal has been found, we can stop
+                self.addAdjacentNodes(currentNode)
+
+         finalTime = int(round(time.time()))    #final time
+
+         time = (finalTime - initial)  #computing the difference
+         return time
+
 
 
     #CHECK NODE
 
     #method that checks if the node has already been explored. It receives a node an it's compared with all the nodes from the closed list
+    #it returns "false" if the node has already been expanded
     def checkNode(self,currentNode):
         expandNode = True       #variable that will be returned
         for node in self.__closedList:  #looping through the list of nodes that have already been expaned 
-            if(currentNode.equals(node)):  #checking ig they are equal
+            if(currentNode.equals(node)):  #checking if they are equal
                 expandNode = False      #in that case, our result variable is set to "false"
                 break
 
@@ -69,14 +101,14 @@ class astar:
 
     #method that prints the open list size
     def printOpenList(self):
-        print(self.__openList.getSize)
+        print(self.__openList.getSize())
 
 
 
 
     #GET PATH
 
-    #methos that re
+    #method that return the path followed to reach the received node
     def getPath(self,currentNode):
         path = []
         path.append(currentNode)
@@ -89,9 +121,6 @@ class astar:
         return path
 
 
-
-
-        
 
 
      #SETTERS

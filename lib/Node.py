@@ -64,16 +64,22 @@ class node:
 
     #method that checks if the information from another node is equal to the one we have
     def equals (self,otherNode):
-        #print(len(self.listSatellites))
+        
         #checking that the lists of observations are equal, but looping through through them
         for x in range(len(self.listObservations)):
-            if(self.listObservations[x].getIdNumber != otherNode.listObservations[x].getIdNumber ):
+            if (self.listObservations[x].getIdNumber() != otherNode.listObservations[x].getIdNumber()
+            or self.listObservations[x].getBand() != otherNode.listObservations[x].getBand()
+            or self.listObservations[x].getPosition() != otherNode.listObservations[x].getPosition()
+            or self.listObservations[x].getMeasured() != otherNode.listObservations[x].getMeasured() ):
                 return False
 
         
         #checking that the lists of satellites are equal, but looping through through them
         for x in range(len(self.listSatellites)):
-            if(self.listSatellites[x].getIdNumber != otherNode.listSatellites[x].getIdNumber ):
+            if (self.listSatellites[x].getIdNumber() != otherNode.listSatellites[x].getIdNumber()
+            or self.listSatellites[x].getBand() != otherNode.listSatellites[x].getBand()
+            or self.listSatellites[x].getPosition() != otherNode.listSatellites[x].getPosition()
+            or self.listSatellites[x].getEnergy() != otherNode.listSatellites[x].getEnergy() ):
                 return False
 
         return True  #otherwise, they are equal, so "true" is returned 

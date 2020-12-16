@@ -34,22 +34,25 @@ class observation:
 		self.__band = band
 
 
-	#GETTERS
-
 	def setPosition(self, position):
 		self.__position = position
 
-	def getIdNumber(self, idNumber):
-		self.__idNumber = idNumber
 
-	def getBand(self, band):
-		self.__band = band
+	#GETTERS
 
-	def getPosition(self, position):
-		self.__position = position
+	def getIdNumber(self):
+		return self.__idNumber
 
-	def getMeasured(self, measured):
-		self.__measured = measured
+	def getBand(self):
+		return self.__band
+
+	def getPosition(self):
+		return self.__position
+
+	def getMeasured(self):
+		return self.__measured
+
+	
 
 
 
