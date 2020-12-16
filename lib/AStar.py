@@ -11,7 +11,7 @@ class astar:
     #a goal node and a boolena find goal
     
     __openList = OpenList.openlist() #list of nodes to explore
-    __closedList = [] #list of nodes that have already been explored
+    __closedList = None #list of nodes that have already been explored
     __initialNode = None #initial node of the problem
     __goalNode = None #goal node
     __findGoal = None #this variable is used to check if the goal has been found
@@ -31,7 +31,15 @@ class astar:
 
         #computing heuristics and initial costs
 
-       # self.computeCosts()        #CORRECT THIS!!!
+        self.__initialNode.computeHeuristic(self.__goalNode,'manhattan')     #CORRECT THIS!!!
+        self.__initialNode.setCost(0)
+        self.__initialNode.computeEvaluation()
+        self.__goalNode.computeHeuristic(self.__goalNode)
+
+       
+        #generating a list of explored and unexplored nodes
+
+        self.__closedList = []   #CHECK THIS!
 
         self.__openList = OpenList.openlist()
       
@@ -39,18 +47,51 @@ class astar:
         
         
 
-    #auxiliary method to calculate the heuristics and initial costs
-    #def computeCosts(self):
-        #self.__initialNode.computeHeuristic(self.__goalNode,'manhattan')     #CORRECT THIS!!!
-     #   self.__initialNode.setCost(0)
-        #self.__initialNode.computeEvaluation()
-      #  self.__goalNode.computeHeuristic(self.__goalNode)
+        
+
+
+    #CHECK NODE
+
+    #method that checks if the node has already been explored. It receives a node an it's compared with all the nodes from the closed list
+    def checkNode(self,currentNode):
+        expandNode = True       #variable that will be returned
+        for node in self.__closedList:  #looping through the list of nodes that have already been expaned 
+            if(currentNode.equals(node)):  #checking ig they are equal
+                expandNode = False      #in that case, our result variable is set to "false"
+                break
+
+        return expandNode
+
+
+
+
+    #PRINT OPEN LIST
+
+    #method that prints the open list size
+    def printOpenList(self):
+        print(self.__openList.getSize)
+
+
+
+
+    #GET PATH
+
+    #methos that re
+    def getPath(self,currentNode):
+        path = []
+        path.append(currentNode)
+        parent = currentNode.getParent()
+        while  parent != None :
+            path.append(0,parent)
+            currentNode = parent
+            parent = currentNode.getParent()
+
+        return path
+
 
 
 
         
-
-
 
 
      #SETTERS

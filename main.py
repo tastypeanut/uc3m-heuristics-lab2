@@ -101,11 +101,15 @@ def main():
     op2.addFirst(node4)
     print(node4) 
     print(op2.getRootNode().getNextNode())
-    op2.addFirst(node3)
-    print(node3.getParent())
-    print(node3)  
-    print(op2.getRootNode().getNextNode())
-    print(op2.getSize())
+    print(node4.getNextNode())
+    print(node3)
+    op2.addLast(node3)
+    print(op2.getRootNode().getNextNode().getNextNode())
+    #op2.addFirst(node3)
+    #print(node3.getParent())
+    #print(node3)  
+    #print(op2.getRootNode().getNextNode())
+    #print(op2.getSize())
 
 
 
