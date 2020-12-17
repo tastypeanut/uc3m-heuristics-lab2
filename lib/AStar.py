@@ -1,6 +1,9 @@
 import time
 import lib.OpenList as OpenList
 import lib.Node as Node
+import lib.objects.Satellite as Satellite
+import lib.objects.Activity as Activity
+import lib.objects.Observation as Observation
 
 #this class represents the A* algorithm
 class astar:
@@ -50,7 +53,24 @@ class astar:
 
         
 
-    #ADD ADJACENT NODE
+    #ADD ADJACENT 
+    
+    #method that inserts in the open list all the nodes of the observations that can be taken in this moment
+    def addAdjacentNodes(self,currentNode):
+        satellites = currentNode.getListSatellites()
+        activities = []                                              #CHECK THIS!
+        observations = currentNode.getListObservations()
+
+
+        for satellite in satellites:        #moving along the list of satellites of the current node
+            for observation in observations:    #moving along the list of observations of the current node
+
+                #SAT 1: checking that the observation and the satllite are in the same position (x axis) and that the observation
+                #is within the allowed bands for sat1
+                if( satellite.getIdNumber() =='1' and satellite.getPosition() == observation.getPosition() and 
+                (satellite.getBand() == observation.getBand() or satellite.getBand()-1 == observation.getBand())):
+                    return 0
+        
 
 
 
@@ -60,7 +80,7 @@ class astar:
 
     #implementation of the A* algorithm
     def algorithm(self):
-        initialTime = int(round(time.time()))  #this will be used to take the execution time
+        initialTime = int(round(time.time() * 1000)) #this will be used to take the execution time
 
         currentNode = None  #defining a node
 
@@ -74,10 +94,10 @@ class astar:
                     break                   #as the goal has been found, we can stop
                 self.addAdjacentNodes(currentNode)
 
-         finalTime = int(round(time.time()))    #final time
+        finalTime = int(round(time.time()))   #final time
 
-         time = (finalTime - initial)  #computing the difference
-         return time
+        time = (finalTime - initialTime)  #computing the difference
+        return time
 
 
 
@@ -108,7 +128,7 @@ class astar:
 
     #GET PATH
 
-    #method that return the path followed to reach the received node
+    #method that returns the path followed to reach the received node
     def getPath(self,currentNode):
         path = []
         path.append(currentNode)

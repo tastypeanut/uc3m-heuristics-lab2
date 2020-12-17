@@ -5,6 +5,7 @@ import lib.OpenList as OpenList
 import lib.AStar as AStar
 import lib.objects.Satellite as Satellite
 import lib.objects.Observation as Observation
+import lib.objects.Activity as Activity
 
 def main():
     try:
@@ -86,7 +87,7 @@ def main():
     print(len(l1))
 
     childNode3 = Node.node(parentNode, l1, l2)
-    print(len(childNode3.listSatellites))
+    print(len(childNode3.getListSatellites()))
     childNode4 = Node.node(parentNode, l3, l2)
 
     print(childNode3.equals(childNode4))

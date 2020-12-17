@@ -5,6 +5,7 @@ class satellite:
 	__band = None
 	__position = None
 	__energy = None
+	__activities = []  #list of activities that the satellite can do
 	
 
 

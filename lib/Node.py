@@ -10,10 +10,10 @@ class node:
     __nextNodeList = None
 
     #list of satellites
-    listSatellites = []
+    __listSatellites = []
 
     #list of observations that need to be measured
-    listObservations = []
+    __listObservations = []
 
 
     #CONSTRUCTOR
@@ -35,8 +35,8 @@ class node:
         #receiving 3 paremeters: parentNode, list of satellites and list of observations
         if len(args) == 3:
             self.setParent(args[0])
-            self.listSatellites = args[1]
-            self.listObservations = args[2]
+            self.setListSatellites(args[1])
+            self.setListObservations(args[2])
 
 
 
@@ -66,20 +66,20 @@ class node:
     def equals (self,otherNode):
         
         #checking that the lists of observations are equal, but looping through through them
-        for x in range(len(self.listObservations)):
-            if (self.listObservations[x].getIdNumber() != otherNode.listObservations[x].getIdNumber()
-            or self.listObservations[x].getBand() != otherNode.listObservations[x].getBand()
-            or self.listObservations[x].getPosition() != otherNode.listObservations[x].getPosition()
-            or self.listObservations[x].getMeasured() != otherNode.listObservations[x].getMeasured() ):
+        for x in range(len(self.__listObservations)):
+            if (self.__listObservations[x].getIdNumber() != otherNode.getListObservations()[x].getIdNumber()
+            or self.__listObservations[x].getBand() != otherNode.getListObservations()[x].getBand()
+            or self.__listObservations[x].getPosition() != otherNode.getListObservations()[x].getPosition()
+            or self.__listObservations[x].getMeasured() != otherNode.getListObservations()[x].getMeasured() ):
                 return False
 
         
         #checking that the lists of satellites are equal, but looping through through them
-        for x in range(len(self.listSatellites)):
-            if (self.listSatellites[x].getIdNumber() != otherNode.listSatellites[x].getIdNumber()
-            or self.listSatellites[x].getBand() != otherNode.listSatellites[x].getBand()
-            or self.listSatellites[x].getPosition() != otherNode.listSatellites[x].getPosition()
-            or self.listSatellites[x].getEnergy() != otherNode.listSatellites[x].getEnergy() ):
+        for x in range(len(self.__listSatellites)):
+            if (self.__listSatellites[x].getIdNumber() != otherNode.getListSatellites()[x].getIdNumber()
+            or self.__listSatellites[x].getBand() != otherNode.getListSatellites()[x].getBand()
+            or self.__listSatellites[x].getPosition() != otherNode.getListSatellites()[x].getPosition()
+            or self.__listSatellites[x].getEnergy() != otherNode.getListSatellites()[x].getEnergy() ):
                 return False
 
         return True  #otherwise, they are equal, so "true" is returned 
@@ -117,6 +117,12 @@ class node:
     def setNextNode(self, nextNodeList):
         self.__nextNodeList = nextNodeList
 
+    def setListSatellites (self, satellites):
+        self.__listSatellites = satellites
+
+    def setListObservations (self, observations):
+        self.__listObservations = observations
+
 
    
      #GETTERS
@@ -137,6 +143,12 @@ class node:
 
     def getNextNode(self):
         return self.__nextNodeList
+
+    def getListSatellites(self):
+        return self.__listSatellites
+
+    def getListObservations(self):
+        return self.__listObservations
 
 
 
