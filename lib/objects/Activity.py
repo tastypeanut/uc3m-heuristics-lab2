@@ -1,7 +1,7 @@
 #this class represents each of the activities that the satellites can do on each of the bands
 
 class activity:
-    __type = None  #activity type: idle, measurement, dowlink, turn, charge
+    __type = None  #activity type: idle, measurement, downlink, turn, charge
     __cost = None #cost of permforming the activity
 
 

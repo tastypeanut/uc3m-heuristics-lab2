@@ -113,6 +113,20 @@ def main():
     #print(op2.getSize())
 
 
+#Change band tests
+
+    print ("---------------------------------------")
+    sat = Satellite.satellite(2,1,4,7)
+    print(sat.getBand())
+    sat.changeBand(2)
+    print(sat.getBand())
+    sat.takeMeasurement(2)
+    sat.downlink(2)
+    print(sat.getEnergy())
+    sat.charge(2)
+    print(sat.getEnergy())
+
+
 
     print("Number of lines of file {0}: {1}\nFirst line: {2}\nParent of node2: {3}".format(sys.argv[1], numlines, obsraw, node2.getParent()))
     fileraw.close()

@@ -5,7 +5,10 @@ class satellite:
 	__band = None
 	__position = None
 	__energy = None
-	__activities = []  #list of activities that the satellite can do
+	__hasObservation = None  #this variable indicates if the satellite currently has an observation that needs to be dowlinked
+
+
+	__activities = []  #list of activities that the satellite can do  !!!
 	
 
 
@@ -18,10 +21,84 @@ class satellite:
 		self.setPosition(position)
 		self.setBand(band)
 		self.setEnergy(energy)
+		self.setHasObervation(False) #initially, the satellite has not taken any observation
 
 
 
-#SETTERS
+
+	#CHANGE BAND
+
+	#this method performs the activity of changing the band of a satellite. 
+	#It is important to take into account that, in the case of the SAT1, we are assuming that it can always access the current band and one less (__band - 1)
+	#It will initially be located in ban 1, so it will be able to access band 0 as well. If it wants to change to the next band, it will move to band 2, being able
+	#to access band 2 - 1 = 1 as well.
+	#In the case of the REST of the satellites, they can access its current band and one more (__band + 1). For instance, satellite 2 is intially located in band 2,
+	# and it can also access band 2 + 1 = 3. If it changes to the other band, it will be able to access bands 2 and 2-1= 1.
+	def changeBand(self,energyCost):
+		if self.__energy > energyCost:   #cheking there's enough energy
+
+
+			#SAT1
+			if self.__idNumber == 1:
+				if self.__band == 1:	#currently located in bands 1-2
+					self.setBand(0)		#changing to bands 0-1
+				else: self.setBand(1)	#currently located in bands 0-1, and changing to bands 1-2 
+
+			#Rest of the satellites
+			elif self.__band == self.__idNumber:	#currently located in bands idNumber and idNumber + 1
+				self.setBand(self.__idNumber - 1)		#changing to bands idNumber and idNumber - 1
+			else: self.setBand(self.__idNumber)	#currently located in bands idNumber and idNumber - 1, and changing to bands idNumber and idNumber + 1
+
+		
+
+
+			
+
+			self.setEnergy(self.__energy - energyCost)  #updating the energy levels
+		
+		else: print ("There is not enough energy to change band")   #in the case there is not enough energy to perform the activity
+
+
+
+
+	#CHARGE
+
+	#method that charges the satellite's energy
+	def charge(self, energyGained):
+		self.setEnergy(self.__energy + energyGained )
+
+
+
+	#TAKE MEASUREMENT
+
+	#this method simply allows the satellite to take a measurent if it does not have one at the moment
+	def takeMeasurement(self,energyCost):
+		if (not(self.__hasObservation) and self.__energy > energyCost):    #cheking there's enough energy
+			self.setHasObervation(True)
+			self.setEnergy(self.__energy - energyCost)
+
+		else: print ("There is not enough energy or a measurement has already been taken")  #in the case there is not enough energy to perform the activity
+
+
+
+	#DOWNLINK
+
+	#when a satellite downlinks the observation (if it has one), we set its variable to "false" and substract the cost
+	def downlink (self, energyCost):
+		if (self.__hasObservation and self.__energy > energyCost):   #cheking that it has an observation and that there's enough energy
+			self.setHasObervation(False)  #setting the variable to "false"
+			self.setEnergy(self.__energy - energyCost)		#calculating the new energy level
+
+		else: print ("There's no observation to downlink or there is not enough energy")  #in the case there is not enough energy to perform the activity
+
+
+
+
+		
+
+
+
+	#SETTERS
 	
 	def setIdNumber(self, idNumber):
 		self.__idNumber = idNumber
@@ -34,6 +111,11 @@ class satellite:
 
 	def setBand(self, band):
 		self.__band = band
+
+	def setHasObervation(self,observation):
+		self.__hasObservation = observation
+
+
 
 	#GETTERS
 
@@ -48,3 +130,6 @@ class satellite:
 
 	def getEnergy(self):
 		return self.__energy
+
+	def getHasObservation(self):
+		return self.__hasObservation
