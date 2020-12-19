@@ -118,10 +118,7 @@ def main():
 
     print ("---------------------------------------")
     listenergy = [1, 2, 3, 4, 20]
-    print("The list length is {0}".format(len(listenergy)))
-    print(len(listenergy))
     sat = Satellite.satellite(2, 1, 4, listenergy)
-    print("The list length is {0}".format(len(listenergy)))
     obs = Observation.observation(3,2,1)
     print(sat.getBand())
     sat.changeBand()
@@ -142,8 +139,8 @@ def main():
     l4 = []
     l4.append (Observation.observation(1,1,1))
     l4.append (Observation.observation(4,2,2))
-    l4.append (Observation.observation(2,2,2))
-    l4.append (Observation.observation(3,4,2))
+    l4.append (Observation.observation(2,5,2))
+    l4.append (Observation.observation(3,1,2))
 
     for x in range (70):        #moving along the position (x axis)
         for observation in l4:  #moving along the observations

@@ -21,9 +21,8 @@ class satellite:
 		self.setIdNumber(idNumber)
 		self.setPosition(position)
 		self.setBand(band)
-		print("HELLO")
-		print(len(energyCostList))
-		#self.setEnergyCostList(energyCostList)
+		self.setEnergy(energyCostList[4])
+		self.setEnergyCostList(energyCostList)
 		self.setHasObervation(False) #initially, the satellite has not taken any observation
 
 
@@ -38,7 +37,7 @@ class satellite:
 	#In the case of the REST of the satellites, they can access its current band and one more (__band + 1). For instance, satellite 2 is intially located in band 2,
 	# and it can also access band 2 + 1 = 3. If it changes to the other band, it will be able to access bands 2 and 2-1= 1.
 	def changeBand(self):
-		if self.__energy > self.states.TURN:   #cheking there's enough energy
+		if self.__energy > self.states.turn:   #cheking there's enough energy
 
 
 			#SAT1
@@ -58,7 +57,7 @@ class satellite:
 
 			
 
-			self.setEnergy(self.__energy - self.states.TURN)  #updating the energy levels
+			self.setEnergy(self.__energy - self.states.turn)  #updating the energy levels
 		
 		else: print ("There is not enough energy to change band")   #in the case there is not enough energy to perform the activity
 
@@ -78,10 +77,10 @@ class satellite:
 	#this method simply allows the satellite to take a measurent if it does not have one at the moment
 	def takeMeasurement(self,observation):
 	#not(self.__hasObservation) and  ADD IT!!!
-		if (  self.__energy > self.states.MEASUREMENT and not(observation.getMeasured()) ):    #cheking there's enough energy
+		if (  self.__energy > self.states.measurement and not(observation.getMeasured()) ):    #cheking there's enough energy
 			self.setHasObervation(True)
 			observation.setMeasured(True)
-			self.setEnergy(self.__energy - self.states.MEASUREMENT) 	#calculating the new energy level
+			self.setEnergy(self.__energy - self.states.measurement) 	#calculating the new energy level
 
 		else: print ("There is not enough energy or a measurement has already been taken")  #in the case there is not enough energy to perform the activity
 
@@ -91,10 +90,15 @@ class satellite:
 
 	#when a satellite downlinks the observation (if it has one), we set its variable to "false" and substract the cost
 	def downlink (self):
-		if (self.__hasObservation and self.__energy > self.states.DOWNLINK):   #cheking that it has an observation and that there's enough energy
+		if (self.__hasObservation and self.__energy > self.states.downlink):   #cheking that it has an observation and that there's enough energy
 			self.setHasObervation(False)  #setting the variable to "false"
-			self.setEnergy(self.__energy - self.states.DOWNLINK)		#calculating the new energy level
-			self.__state = self.states.state.DOWNLINK      #updating the state to downlink
+			self.setEnergy(self.__energy - self.states.downlink)		#calculating the new energy level
+
+
+		#	self.__state = self.states.state.DOWNLINK      #updating the state to downlink     			CHECK THIS!!!
+
+
+
 		else: print ("There's no observation to downlink or there is not enough energy")  #in the case there is not enough energy to perform the activity
 
 
@@ -126,8 +130,8 @@ class satellite:
 
 	def setEnergyCostList(self, energyCostList):
 		self.__energyCostList = energyCostList
-		#self.states = States.states(energyCostList)
-		self.__energy = energyCostList[4]
+		self.states = States.states(energyCostList)
+	
 	
 
 	#GETTERS
