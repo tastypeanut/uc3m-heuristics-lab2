@@ -116,16 +116,50 @@ def main():
 #Change band tests
 
     print ("---------------------------------------")
-    sat = Satellite.satellite(2,1,4,7)
+    sat = Satellite.satellite(3,1,4,7)
+    obs = Observation.observation(3,2,1)
     print(sat.getBand())
     sat.changeBand(2)
     print(sat.getBand())
-    sat.takeMeasurement(2)
+    sat.takeMeasurement(2,obs)
     sat.downlink(2)
     print(sat.getEnergy())
     sat.charge(2)
     print(sat.getEnergy())
 
+    print ("---------------------------------------")
+
+
+    #TEST FOR REACHING OBSERVATIONS
+
+    sat2 = Satellite.satellite(2,2,0,20) 
+    
+    l4 = []
+    l4.append (Observation.observation(1,1,1))
+    l4.append (Observation.observation(4,2,2))
+    l4.append (Observation.observation(2,2,2))
+    l4.append (Observation.observation(3,3,2))
+
+    for x in range (70):        #moving along the position (x axis)
+        for observation in l4:  #moving along the observations
+            print(sat2.getPosition())
+            if ( (sat2.getBand() == observation.getBand() or sat2.getBand() + 1 == observation.getBand() )      #checking conditions
+            and sat2.getPosition() == observation.getPosition() and not(observation.getMeasured()) ):
+                print("hi")
+                sat2.takeMeasurement(1,observation)  #measuring
+                break                                   #nothing else can be measured in that position at the moment
+        sat2.setPosition(sat2.getPosition() + 1)       #moving to the next position
+        if(sat2.getPosition() == 24):   #if the day has finished, we start again
+            sat2.setPosition(0)
+
+
+        
+
+    for observations in  l4:
+        print(observations.getMeasured())
+
+
+    print ("---------------------------------------")
 
 
     print("Number of lines of file {0}: {1}\nFirst line: {2}\nParent of node2: {3}".format(sys.argv[1], numlines, obsraw, node2.getParent()))

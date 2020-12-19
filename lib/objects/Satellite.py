@@ -72,10 +72,11 @@ class satellite:
 	#TAKE MEASUREMENT
 
 	#this method simply allows the satellite to take a measurent if it does not have one at the moment
-	def takeMeasurement(self,energyCost):
-		if (not(self.__hasObservation) and self.__energy > energyCost):    #cheking there's enough energy
+	def takeMeasurement(self,energyCost, observation):
+		if ( self.__energy > energyCost and not(observation.getMeasured()) ):    #cheking there's enough energy
 			self.setHasObervation(True)
-			self.setEnergy(self.__energy - energyCost)
+			observation.setMeasured(True)
+			self.setEnergy(self.__energy - energyCost) 	#calculating the new energy level
 
 		else: print ("There is not enough energy or a measurement has already been taken")  #in the case there is not enough energy to perform the activity
 
