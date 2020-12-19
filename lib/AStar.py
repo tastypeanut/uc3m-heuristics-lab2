@@ -2,7 +2,7 @@ import time
 import lib.OpenList as OpenList
 import lib.Node as Node
 import lib.objects.Satellite as Satellite
-import lib.objects.Activity as Activity
+import lib.objects.States as States
 import lib.objects.Observation as Observation
 
 #this class represents the A* algorithm
@@ -57,13 +57,36 @@ class astar:
     
     #method that inserts in the open list all the nodes of the observations that can be taken in this moment
     def addAdjacentNodes(self,currentNode):
-        satellites = currentNode.getListSatellites()
-        activities = []                                              #CHECK THIS!
-        observations = currentNode.getListObservations()
+        
+        childNode = Node.node(currentNode)
+
+        observations = childNode.getListObservations()
+        satellites = childNode.getListSatellites()
+        tempobslist = childNode.getListObservations()
+
+        
+        
+        while (len(tempobslist) > 0):        #moving along the position (x axis)
+            for satellite in satellites:        #moving along the list of satellites of the current node
+                #if (satellite.getState().equal(States.states.MEASUREMENT)):
+                #    satellite.downlink()
+
+                    
+                for observation in observations:    #moving along the list of observations of the current node
+                # print(sat2.getPosition())
+                    if ( (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand() )      #checking conditions
+                    and satellite.getPosition() == observation.getPosition() and not(observation.getMeasured()) ):
+                    # print("hi")
+                        satellite.takeMeasurement(1,observation)  #measuring
+                        break  #nothing else can be measured in that position at the moment
+                satellite.setPosition(satellite.getPosition() + 1)       #moving to the next position
+                if(satellite.getPosition() == 24):   #if the day has finished, we start again
+                    satellite.setPosition(0)
 
 
-        for satellite in satellites:        #moving along the list of satellites of the current node
-            for observation in observations:    #moving along the list of observations of the current node
+
+
+        
 
                 #SAT 1: checking that the observation and the satllite are in the same position (x axis) and that the observation
                 #is within the allowed bands for sat1
@@ -80,7 +103,8 @@ class astar:
 
     #implementation of the A* algorithm
     def algorithm(self):
-        initialTime = int(round(time.time() * 1000)) #this will be used to take the execution time
+        time1 = int(time.time() * 1000) 
+        initialTime = int(round(time1 * 1000)) #this will be used to take the execution time
 
         currentNode = None  #defining a node
 

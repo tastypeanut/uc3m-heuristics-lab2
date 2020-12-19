@@ -5,7 +5,7 @@ import lib.OpenList as OpenList
 import lib.AStar as AStar
 import lib.objects.Satellite as Satellite
 import lib.objects.Observation as Observation
-import lib.objects.Activity as Activity
+import lib.objects.States as States
 
 def main():
     try:
@@ -70,14 +70,15 @@ def main():
 
 
     #Checking the creation of lists and nodes works properly
+    listenergy = [1, 2, 3, 4, 20]
 
     l1 = []
-    l1.append (Satellite.satellite(1,1,1,1))
-    l1.append (Satellite.satellite(2,2,2,2))
+    l1.append (Satellite.satellite(1,1,1, listenergy))
+    l1.append (Satellite.satellite(2,2,2,listenergy))
 
     l3 = []
-    l3.append (Satellite.satellite(1,1,1,1))
-    l3.append (Satellite.satellite(2,2,2,2))
+    l3.append (Satellite.satellite(1,1,1,listenergy))
+    l3.append (Satellite.satellite(2,2,2,listenergy))
 
 
     l2 = []
@@ -116,13 +117,17 @@ def main():
 #Change band tests
 
     print ("---------------------------------------")
-    sat = Satellite.satellite(3,1,4,7)
+    listenergy = [1, 2, 3, 4, 20]
+    print("The list length is {0}".format(len(listenergy)))
+    print(len(listenergy))
+    sat = Satellite.satellite(2, 1, 4, listenergy)
+    print("The list length is {0}".format(len(listenergy)))
     obs = Observation.observation(3,2,1)
     print(sat.getBand())
-    sat.changeBand(2)
+    sat.changeBand()
     print(sat.getBand())
-    sat.takeMeasurement(2,obs)
-    sat.downlink(2)
+    sat.takeMeasurement(obs)
+    sat.downlink()
     print(sat.getEnergy())
     sat.charge(2)
     print(sat.getEnergy())
@@ -132,25 +137,25 @@ def main():
 
     #TEST FOR REACHING OBSERVATIONS
 
-    sat2 = Satellite.satellite(2,2,0,20) 
+    sat2 = Satellite.satellite(2,2,0,listenergy) 
     
     l4 = []
     l4.append (Observation.observation(1,1,1))
     l4.append (Observation.observation(4,2,2))
     l4.append (Observation.observation(2,2,2))
-    l4.append (Observation.observation(3,3,2))
+    l4.append (Observation.observation(3,4,2))
 
     for x in range (70):        #moving along the position (x axis)
         for observation in l4:  #moving along the observations
-            print(sat2.getPosition())
+           # print(sat2.getPosition())
             if ( (sat2.getBand() == observation.getBand() or sat2.getBand() + 1 == observation.getBand() )      #checking conditions
             and sat2.getPosition() == observation.getPosition() and not(observation.getMeasured()) ):
-                print("hi")
-                sat2.takeMeasurement(1,observation)  #measuring
+               # print("hi")
+                sat2.takeMeasurement(observation)  #measuring
                 break                                   #nothing else can be measured in that position at the moment
         sat2.setPosition(sat2.getPosition() + 1)       #moving to the next position
         if(sat2.getPosition() == 24):   #if the day has finished, we start again
-            sat2.setPosition(0)
+            sat2.setPosition(0) 
 
 
         
