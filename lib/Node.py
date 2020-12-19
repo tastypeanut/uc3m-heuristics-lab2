@@ -31,6 +31,8 @@ class node:
             self.setEvaluation(args[0].getEvaluation())
             self.setParent(args[0].getParent())
             self.setNextNode(args[0].getNextNode())
+            self.setListSatellites(args[0].getListSatellites())
+            self.setListObservations(args[0].getListObservations())
         
         #receiving 3 paremeters: parentNode, list of satellites and list of observations
         if len(args) == 3:
@@ -50,7 +52,7 @@ class node:
     def computeHeuristic(self,finalNode,heuristicType):
         self.heuristic = 0
 
-        for obs in self.listObservations:
+        for obs in self.__listObservations:
             if heuristicType == 'manhattan':
                 result = 5
 
@@ -91,7 +93,7 @@ class node:
     
     #method that executes the evaluation function of the problem for the node
     def computeEvaluation(self):
-        self.__evaluation = self.__cost + self.__heuristic
+        self.__evaluation = self.__cost + 5
 
 
     

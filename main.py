@@ -73,12 +73,12 @@ def main():
     listenergy = [1, 2, 3, 4, 20]
 
     l1 = []
-    l1.append (Satellite.satellite(1,1,1, listenergy))
-    l1.append (Satellite.satellite(2,2,2,listenergy))
+    l1.append (Satellite.satellite(1,1,1, "measurement",listenergy))
+    l1.append (Satellite.satellite(2,2,2,"measurement",listenergy))
 
     l3 = []
-    l3.append (Satellite.satellite(1,1,1,listenergy))
-    l3.append (Satellite.satellite(2,2,2,listenergy))
+    l3.append (Satellite.satellite(1,1,1,"measurement",listenergy))
+    l3.append (Satellite.satellite(2,2,2,"measurement",listenergy))
 
 
     l2 = []
@@ -118,15 +118,15 @@ def main():
 
     print ("---------------------------------------")
     listenergy = [1, 2, 3, 4, 20]
-    sat = Satellite.satellite(2, 1, 4, listenergy)
+    sat = Satellite.satellite(2, 1, 4, "measurement",listenergy)
     obs = Observation.observation(3,2,1)
     print(sat.getBand())
-    sat.changeBand()
+    sat.turn()
     print(sat.getBand())
-    sat.takeMeasurement(obs)
+    sat.measure(obs)
     sat.downlink()
     print(sat.getEnergy())
-    sat.charge(2)
+    sat.charge()
     print(sat.getEnergy())
 
     print ("---------------------------------------")
@@ -134,7 +134,7 @@ def main():
 
     #TEST FOR REACHING OBSERVATIONS
 
-    sat2 = Satellite.satellite(2,2,0,listenergy) 
+    sat2 = Satellite.satellite(2,2,0,"measurement",listenergy) 
     
     l4 = []
     l4.append (Observation.observation(1,1,1))
@@ -148,7 +148,7 @@ def main():
             if ( (sat2.getBand() == observation.getBand() or sat2.getBand() + 1 == observation.getBand() )      #checking conditions
             and sat2.getPosition() == observation.getPosition() and not(observation.getMeasured()) ):
                # print("hi")
-                sat2.takeMeasurement(observation)  #measuring
+                sat2.measure(observation)  #measuring
                 break                                   #nothing else can be measured in that position at the moment
         sat2.setPosition(sat2.getPosition() + 1)       #moving to the next position
         if(sat2.getPosition() == 24):   #if the day has finished, we start again
@@ -161,7 +161,44 @@ def main():
         print(observations.getMeasured())
 
 
-    print ("---------------------------------------")
+    print("---------------------------------------")
+
+    listenergy = [20, 21, 3, 4, 20]
+    listenergy1 = [20, 21, 3, 6, 20]
+
+
+    l5 = []
+    l5.append (Satellite.satellite(1,1,1,"measurement",listenergy))
+    l5.append (Satellite.satellite(2,2,2,"measurement",listenergy1))
+    l5[0].setHasObervation(True)
+
+    l3 = []
+    l3.append (Satellite.satellite(2,1,5,"charge",listenergy))
+    l3.append(Satellite.satellite(1, 2, 7, "measurement", listenergy))
+
+    l1 = []
+    l1.append (Observation.observation(1,1,1))
+    l1.append (Observation.observation(2,2,5))
+
+    l2 = []
+    l2.append (Observation.observation(1,3,11))
+    l2.append (Observation.observation(2,4,3))
+
+    childNode4 = Node.node(parentNode, l3, l2)
+
+    childNode5 = Node.node(parentNode, l5, l1)
+    astar = AStar.astar(childNode5, childNode4)
+    astar.algorithm()
+    print("Size of OpenList: {0}".format(astar.getOpenList().getSize()))
+    print(childNode5.getHeuristic())
+    print(childNode5.getNextNode().getHeuristic())
+    #print(astar.getOpenList().pullFirst().getListSatellites())
+    #testpull1 = astar.getOpenList().pullFirst().getListSatellites()
+    #testpull2 = astar.getOpenList().pullFirst().getListSatellites()
+    #print(testpull1[0].getActivity())
+    #print(testpull1[1].getActivity())
+    #print(testpull2[0].getActivity())
+    #print(testpull2[1].getActivity())
 
 
     print("Number of lines of file {0}: {1}\nFirst line: {2}\nParent of node2: {3}".format(sys.argv[1], numlines, obsraw, node2.getParent()))
