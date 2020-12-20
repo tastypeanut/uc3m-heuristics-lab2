@@ -49,7 +49,7 @@ class node:
     #method that computes the heuristic
     #it receives the final node to where to the heuristics will be calculated and 
     #the heuristic function that will be employed. There are two options: Manhattan and Hamming distance
-    def computeHeuristic(self,finalNode,heuristicType):
+    def computeHeuristic(self, finalNode, heuristicType):
         self.heuristic = 0
 
         for obs in self.__listObservations:
@@ -66,17 +66,18 @@ class node:
 
     #method that checks if the information from another node is equal to the one we have
     def equals (self,otherNode):
-        
+        return False
+        print("In method equals, observations: {0} {1}".format(len(self.__listObservations), range(len(self.__listObservations))))
         #checking that the lists of observations are equal, but looping through through them
         for x in range(len(self.__listObservations)):
             if (self.__listObservations[x].getIdNumber() != otherNode.getListObservations()[x].getIdNumber()
             or self.__listObservations[x].getBand() != otherNode.getListObservations()[x].getBand()
             or self.__listObservations[x].getPosition() != otherNode.getListObservations()[x].getPosition()
-            or self.__listObservations[x].getMeasured() != otherNode.getListObservations()[x].getMeasured() ):
+            or self.__listObservations[x].getMeasured() != otherNode.getListObservations()[x].getMeasured()):
                 return False
 
-        
         #checking that the lists of satellites are equal, but looping through through them
+        print("In method equals, satellites: {0} {1}".format(len(self.__listObservations), range(len(self.__listObservations))))
         for x in range(len(self.__listSatellites)):
             if (self.__listSatellites[x].getIdNumber() != otherNode.getListSatellites()[x].getIdNumber()
             or self.__listSatellites[x].getBand() != otherNode.getListSatellites()[x].getBand()

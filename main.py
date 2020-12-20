@@ -163,36 +163,42 @@ def main():
 
     print("---------------------------------------")
 
-    listenergy = [20, 21, 3, 4, 20]
-    listenergy1 = [20, 21, 3, 6, 20]
+    listenergy = [20, 10, 3, 4, 20]
 
+    satelliteliststart = []
+    satelliteliststart.append(Satellite.satellite(1,0,0,"measurement",listenergy))
+    satelliteliststart.append(Satellite.satellite(2,3,0,"measurement",listenergy))
+    #satelliteliststart[0].setHasObservation(True)
 
-    l5 = []
-    l5.append (Satellite.satellite(1,1,1,"measurement",listenergy))
-    l5.append (Satellite.satellite(2,2,2,"measurement",listenergy1))
-    l5[0].setHasObervation(True)
+    satellitelistgoal = []
+    #satellitelistgoal.append(Satellite.satellite(1,1,5,"charge",listenergy))
+    #satellitelistgoal.append(Satellite.satellite(2,2,7,"charge",listenergy))
 
-    l3 = []
-    l3.append (Satellite.satellite(2,1,5,"charge",listenergy))
-    l3.append(Satellite.satellite(1, 2, 7, "measurement", listenergy))
+    observationliststart = []
+    observationliststart.append (Observation.observation(1,1,1))
+    observationliststart.append (Observation.observation(2,2,1))
+    observationliststart.append (Observation.observation(2,2,3))
 
-    l1 = []
-    l1.append (Observation.observation(1,1,1))
-    l1.append (Observation.observation(2,2,5))
+    observationlistgoal = []
+    #observationlistgoal.append (Observation.observation(1,1,11))
+    #observationlistgoal.append (Observation.observation(2,2,3))
 
-    l2 = []
-    l2.append (Observation.observation(1,3,11))
-    l2.append (Observation.observation(2,4,3))
+    InitialNode = Node.node(None, satelliteliststart, observationliststart)
+    FinalNode = Node.node(None, satellitelistgoal, observationlistgoal)
+    astar = AStar.astar(InitialNode, FinalNode)
 
-    childNode4 = Node.node(parentNode, l3, l2)
-
-    childNode5 = Node.node(parentNode, l5, l1)
-    astar = AStar.astar(childNode5, childNode4)
     astar.algorithm()
-    print("Size of OpenList: {0}".format(astar.getOpenList().getSize()))
-    print(childNode5.getHeuristic())
-    print(childNode5.getNextNode().getHeuristic())
-    #print(astar.getOpenList().pullFirst().getListSatellites())
+    print("Size of OpenList: {0}\n".format(astar.getOpenList().getSize()))
+    print("------------------------------------------")
+    print("Length of path: {0}".format(len(astar.getPath(FinalNode))))
+    for i in astar.getPath(FinalNode):
+        print(i.getListSatellites())
+        #if (i.getListSatellites() != None):
+            #print(i.getParent().getListSatellites())
+          #  print(i.getListSatellites()[0].getEnergy())
+           # print(i.getListSatellites()[0].getActivity())
+
+    print("------------------------------------------")
     #testpull1 = astar.getOpenList().pullFirst().getListSatellites()
     #testpull2 = astar.getOpenList().pullFirst().getListSatellites()
     #print(testpull1[0].getActivity())
@@ -201,7 +207,7 @@ def main():
     #print(testpull2[1].getActivity())
 
 
-    print("Number of lines of file {0}: {1}\nFirst line: {2}\nParent of node2: {3}".format(sys.argv[1], numlines, obsraw, node2.getParent()))
+    #print("Number of lines of file {0}: {1}\nFirst line: {2}\nParent of node2: {3}".format(sys.argv[1], numlines, obsraw, node2.getParent()))
     fileraw.close()
 
 if __name__ == '__main__':

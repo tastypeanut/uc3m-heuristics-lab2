@@ -49,7 +49,7 @@ class astar:
       
         self.__openList.insertAtEvaluation(self.__initialNode)
         
-       
+        #self.__openList.setRootNode(self.__initialNode)
 
         
 
@@ -57,77 +57,55 @@ class astar:
     
     #method that inserts in the open list all the nodes of the observations that can be taken in this moment
     def addAdjacentNodes(self,currentNode):
-        
-        childNode = Node.node(currentNode)
-        childNode.setHeuristic(100000)
-
-        observations = currentNode.getListObservations()
-        satellites = currentNode.getListSatellites()
-        tempobslist = currentNode.getListObservations()
-        print("addAdjacentNodes working")
-        while (len(tempobslist) > 0):  #moving along the position (x axis)
-            
-            for satellite in satellites:        #moving along the list of satellites of the current node
-                if (satellite.getActivity() == "measurement"):
-                    print("TEST")
-                    print(satellite.getActivity(), satellite.getEnergy(), satellite.states.downlink, satellite.getHasObservation())
-                    satellite.downlink()
-                    print(satellite.getActivity(), satellite.getEnergy(), satellite.states.downlink, satellite.getHasObservation())
-                
-                elif (satellite.getActivity() == "charge"):
-                    print("TEST")
-                    print(satellite.getActivity(), satellite.getEnergy(), satellite.states.downlink, satellite.getHasObservation())
-                    satellite.turn()
-                    print(satellite.getActivity(), satellite.getEnergy(), satellite.states.downlink, satellite.getHasObservation())
-                    
-                    #Aquí recorremos los observations
-
-                satellite.setPosition(satellite.getPosition() + 1) #moving to the next position
-            tempobslist = []
-        
-        if self.checkNode(childNode):  #checking it has not been already expanded
-            print("CHECK")
-            childNode.computeHeuristic(self.__goalNode, "manhattan")  #CHECK THIS!!!
-            print("CHECK THIS")
-            childNode.computeEvaluation()
-            childNode.setParent(currentNode)
-            childNode.setNextNode(None)  #the successor is set to 
-            self.__openList.insertAtEvaluation(childNode)  #including it inside the open list
-        
-        return
+        satelliteList = currentNode.getListSatellites()     #list of satellites
+        observationList = currentNode.getListObservations() #list of observations
 
 
-
-
-
-
-            
-        print("BYE")
-        
-
-
-
-        for observation in observations:    #moving along the list of observations of the current node
-            # print(sat2.getPosition())
-            if ( (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand() )      #checking conditions
-                and satellite.getPosition() == observation.getPosition() and not(observation.getMeasured()) ):
-                # print("hi")
-                    satellite.measure(1,observation)  #measuring
-                    break  #nothing else can be measured in that position at the moment
-            satellite.setPosition(satellite.getPosition() + 1)#moving to the next position
-            if(satellite.getPosition() == 24):   #if the day has finished, we start again
+        for satellite in satelliteList:        #this loop will make that all the satellites are in the same time (position)
+            if (satellite.getPosition() >= 0 and satellite.getPosition() < 23):
+                satellite.setPosition(satellite.getPosition() + 1)
+            elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
                 satellite.setPosition(0)
+            #satellite.setObservation(None)      #setting the observations to "None"
+            print(satellite.getPosition())
 
-                #SAT 1: checking that the observation and the satllite are in the same position (x axis) and that the observation
-                #is within the allowed bands for sat1
-            if( satellite.getIdNumber() =='1' and satellite.getPosition() == observation.getPosition() and 
-                (satellite.getBand() == observation.getBand() or satellite.getBand()-1 == observation.getBand())):
-                return 0
+            
+        for satellite in satelliteList:  #moving through the list of satellites to 
+            if (satellite.getPosition() > 11): #satellites can only do activies from 0 to 11 
+                continue  #it won't do anything during this time
+                
+            for observation in observationList:     #moving through the list of observations
+                childNode = Node.node(currentNode)
+                if (satellite.getPosition() == observation.getPosition()): #checking that they are in the same position (x axis)
+                    if (satellite.getBand() == 0 or satellite.getBand() == 2): #Case for bands 0 and 2
+                        if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):
+                            satellite.measure(observation)  #measuring
+                            #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
+                                #observationList.remove(observation)   #removing the observation from the list
+                            if (self.checkNode(childNode)):
+                                childNode.computeHeuristic(None,"manahattan")
+                                childNode.computeEvaluation()
+                                childNode.setParent(currentNode)
+                                childNode.setNextNode(None)
+                                print("SIZE 1")
+                                print(self.__openList.getSize())
+                                self.__openList.insertAtEvaluation(childNode)
+                                print(self.__openList.getSize())
 
-
-    
-        
-
+                    if (satellite.getBand() == 1 or satellite.getBand() == 3): # Case for bands 1 and 3
+                        if(satellite.getBand() == observation.getBand() or satellite.getBand() - 1 == observation.getBand()): 
+                            satellite.measure(observation)  #measuring
+                            #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
+                               # observationList.remove(observation)  #removing the observation from the list
+                            if (self.checkNode(childNode)):
+                                childNode.computeHeuristic(None,"manahattan")
+                                childNode.computeEvaluation()
+                                childNode.setParent(currentNode)
+                                childNode.setNextNode(None)
+                                print("SIZE 2")
+                                print(self.__openList.getSize())
+                                self.__openList.insertAtEvaluation(childNode)
+                                print(self.__openList.getSize())
 
 
 
@@ -144,15 +122,15 @@ class astar:
         while not(self.__openList.isEmpty()):    #checking that the open list is not empty
             currentNode = self.__openList.pullFirst()   #getting the first node from the open list
             if self.checkNode(currentNode):  #checking that the node has not been expanded
-                self.__closedList.append(currentNode)  #including the node in the closed list
-                if(self.getGoalNode().equals(currentNode)):  #checking if its the goal node
-                    print("Our program thinks the nodes are equal")
+                if(self.isGoalNode(currentNode)):  #checking if its the goal node
+                    print("Is finishing?")
                     self.setGoalNode(currentNode) 
                     self.setFindGoal(True)
                     break                   #as the goal has been found, we can stop
                 self.addAdjacentNodes(currentNode)
-                print("heeey")
+                self.__closedList.append(currentNode)  #including the node in the closed list
        # finalTime = int(round(time.time()))   #final time
+        
 
        # time = (finalTime - initialTime)  #computing the difference
         return 5
@@ -167,11 +145,28 @@ class astar:
     def checkNode(self, currentNode):
         expandNode = True       #variable that will be returned
         for node in self.__closedList:  #looping through the list of nodes that have already been expaned 
+            #print(node.getListObservations())
+            print("Checking node: {0} (closed list) against {1} (current node)".format(node, currentNode))
+            print(currentNode.equals(node))
             if(currentNode.equals(node)):  #checking if they are equal
                 expandNode = False      #in that case, our result variable is set to "false"
                 break
-
+            print("expand node: {0}".format(expandNode))
         return expandNode
+
+
+
+            
+
+    #IS GOAL
+
+
+    def isGoalNode(self, currentNode):
+        for observation in currentNode.getListObservations():
+            if (observation.getMeasured() == False):
+                return False
+        return True
+
 
 
 
@@ -193,10 +188,9 @@ class astar:
         path.append(currentNode)
         parent = currentNode.getParent()
         while  parent != None :
-            path.append(0,parent)
+            path.insert(0,parent)
             currentNode = parent
             parent = currentNode.getParent()
-
         return path
 
 
