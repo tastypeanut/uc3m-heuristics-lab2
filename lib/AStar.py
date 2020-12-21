@@ -76,15 +76,15 @@ class astar:
                 continue  #it won't do anything during this time
                 
             print("SAT: {0}".format(satellite.getIdNumber()))
+            countObservations = 0
             for observation in observationList:     #moving through the list of observations
                 childNode = Node.node(currentNode)  #creating  child node
 
                 #MEASURE
                 print("Observation position is : {0}".format(observation.getPosition()))
-                if (satellite.getPosition() == observation.getPosition()):      #checking that they are in the same position (x axis)
-                    print("SAME POSITION")
-
-                    if ( not(observation.getMeasured())):       #checking that the observation has not been measured
+                #checking that the observation has not been measured and that it has energy
+                if (satellite.getPosition() == observation.getPosition() and not(observation.getMeasured()) and satellite.getEnergy() >= satellite.states.measurement):      #checking that they are in the same position (x axis
+ 
                         if (satellite.getBand() == 0 or satellite.getBand() == 2): #CASE for bands 0 and 2
                             if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):
                                 satellite.measure(observation)  #measuring
@@ -120,7 +120,7 @@ class astar:
 
                 #DOWLINK
 
-                elif (satellite.getActivity() == "measurement"):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
+                elif (satellite.getActivity() == "measurement" and satellite.getEnergy() >= satellite.states.measurement):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
                     obs = satellite.getObservation()
                     satellite.downlink()   #the satellite performs the downlinking of the observation
                     if (self.checkNode(childNode)):
@@ -135,7 +135,26 @@ class astar:
                                 break   #it has already done an activity, so the rest do not need to be checked
 
 
-                 #IDDLE
+
+
+                #CHARGE
+
+                elif (satellite.getEnergy() < satellite.states.measurement or satellite.getEnergy() < satellite.states.downlink):
+                    satellite.charge()
+                    if (self.checkNode(childNode)):
+                                childNode.computeHeuristic(None,"manahattan")
+                                childNode.computeEvaluation()
+                                childNode.setParent(currentNode)
+                                childNode.setNextNode(None)
+                                print("CASE 5: Satellite {0} is charging ".format(satellite.getIdNumber()))
+                                print("OpenList size was:{0}".format(self.__openList.getSize()))
+                                self.__openList.insertAtEvaluation(childNode)
+                                print("Now it is:{0}".format(self.__openList.getSize()))
+                                break
+                    
+
+                
+                #IDDLE
 
                 else:
                     satellite.iddle()       #do nothing
@@ -149,7 +168,8 @@ class astar:
                                 self.__openList.insertAtEvaluation(childNode)
                                 print("Now it is:{0}".format(self.__openList.getSize()))
                                 
-
+                
+                countObservations = countObservations +1
                
 
                 

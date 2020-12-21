@@ -66,7 +66,7 @@ class satellite:
 	#method that charges the satellite's energy
 	def charge(self):
 		self.setEnergy(self.__energy + self.states.charge)
-		self.__activity = "charge"       #updating the state to charge
+		#self.__activity = "charge"       #updating the state to charge
 		print("Charging with energy: {0}".format(self.__energy))
 
 
