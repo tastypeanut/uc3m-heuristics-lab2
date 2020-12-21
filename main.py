@@ -163,11 +163,11 @@ def main():
 
     print("---------------------------------------")
 
-    listenergy = [20, 10, 3, 4, 20]
+    listenergy = [5, 1, 3, 4, 20]
 
     satelliteliststart = []
-    satelliteliststart.append(Satellite.satellite(1,0,0,"measurement",listenergy))
-    satelliteliststart.append(Satellite.satellite(2,3,0,"measurement",listenergy))
+    satelliteliststart.append(Satellite.satellite(1,0,-1,"",listenergy))
+    satelliteliststart.append(Satellite.satellite(2,3,-1,"",listenergy))
     #satelliteliststart[0].setHasObservation(True)
 
     satellitelistgoal = []
@@ -175,9 +175,10 @@ def main():
     #satellitelistgoal.append(Satellite.satellite(2,2,7,"charge",listenergy))
 
     observationliststart = []
-    observationliststart.append (Observation.observation(1,1,1))
-    observationliststart.append (Observation.observation(2,2,1))
-    observationliststart.append (Observation.observation(2,2,3))
+    observationliststart.append (Observation.observation(1,1,0))
+    #observationliststart.append (Observation.observation(2,2,1))
+    #observationliststart.append (Observation.observation(3,2,3))
+    #observationliststart.append (Observation.observation(4,1,4))
 
     observationlistgoal = []
     #observationlistgoal.append (Observation.observation(1,1,11))
@@ -189,10 +190,12 @@ def main():
 
     astar.algorithm()
     print("Size of OpenList: {0}\n".format(astar.getOpenList().getSize()))
+    print("Size of ClosedList: {0}\n".format(len(astar.getClosedList())))
     print("------------------------------------------")
     print("Length of path: {0}".format(len(astar.getPath(FinalNode))))
-    for i in astar.getPath(FinalNode):
-        print(i.getListSatellites())
+
+    for obs in InitialNode.getListObservations():
+        print(obs.getMeasured())
         #if (i.getListSatellites() != None):
             #print(i.getParent().getListSatellites())
           #  print(i.getListSatellites()[0].getEnergy())

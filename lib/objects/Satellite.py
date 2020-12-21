@@ -97,8 +97,15 @@ class satellite:
 			self.setObservation(None)     
 		
 		else: 
-			print("There's no observation or there is not enough energy")  #in the case there is not enough energy to perform the activity
+			print("There's no observation to be downlinked or there is not enough energy")  #in the case there is not enough energy to perform the activity
 			self.charge()    #as there is not enough energy, the satellite must be charged
+
+
+	
+	#IDDLE
+
+	def iddle(self):
+		self.__activity = "iddle"
 
 
 

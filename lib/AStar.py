@@ -8,8 +8,7 @@ import lib.objects.Observation as Observation
 #this class represents the A* algorithm
 class astar:
 
-# 0: nothing, 1: basic information, 2: complete information
-    printDebug = None
+
 
     #the fields of this class are an open list, a closed list, an intial node,
     #a goal node and a boolena find goal
@@ -27,7 +26,7 @@ class astar:
     #it receives the initial and goal states
     def __init__(self, initialNode, goalNode):
     
-       # self.printDebug = printDebug
+       
         self.setInitialNode(initialNode)
         self.setGoalNode(goalNode)
         self.setFindGoal(False) #the findGoal variable is set to "false" 
@@ -43,7 +42,7 @@ class astar:
        
         #generating a list of explored and unexplored nodes
 
-        self.__closedList = []   #CHECK THIS!
+        self.__closedList = []   
 
         self.__openList = OpenList.openlist()
       
@@ -52,6 +51,7 @@ class astar:
         #self.__openList.setRootNode(self.__initialNode)
 
         
+
 
     #ADD ADJACENT 
     
@@ -62,12 +62,13 @@ class astar:
 
 
         for satellite in satelliteList:        #this loop will make that all the satellites are in the same time (position)
-            if (satellite.getPosition() >= 0 and satellite.getPosition() < 23):
+            if (satellite.getPosition() >= -1 and satellite.getPosition() < 23):                                             #CORRECT THIS!!!
                 satellite.setPosition(satellite.getPosition() + 1)
             elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
                 satellite.setPosition(0)
+                
             #satellite.setObservation(None)      #setting the observations to "None"
-            print(satellite.getPosition())
+            print("Satellite {0} position is : {1}".format(satellite.getIdNumber(),satellite.getPosition()))
 
             
         for satellite in satelliteList:  #moving through the list of satellites to 
@@ -75,9 +76,13 @@ class astar:
                 continue  #it won't do anything during this time
                 
             for observation in observationList:     #moving through the list of observations
-                childNode = Node.node(currentNode)
+                childNode = Node.node(currentNode)  #creating  child node
+
+                #MEASURE
+
                 if (satellite.getPosition() == observation.getPosition()): #checking that they are in the same position (x axis)
-                    if (satellite.getBand() == 0 or satellite.getBand() == 2): #Case for bands 0 and 2
+
+                    if (satellite.getBand() == 0 or satellite.getBand() == 2): #CASE for bands 0 and 2
                         if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):
                             satellite.measure(observation)  #measuring
                             #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
@@ -87,12 +92,13 @@ class astar:
                                 childNode.computeEvaluation()
                                 childNode.setParent(currentNode)
                                 childNode.setNextNode(None)
-                                print("SIZE 1")
-                                print(self.__openList.getSize())
+                                print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                print("OpenList size was:{0}".format(self.__openList.getSize()))
                                 self.__openList.insertAtEvaluation(childNode)
-                                print(self.__openList.getSize())
+                                print("Now it is:{0}".format(self.__openList.getSize()))
+                                break
 
-                    if (satellite.getBand() == 1 or satellite.getBand() == 3): # Case for bands 1 and 3
+                    if (satellite.getBand() == 1 or satellite.getBand() == 3): # CASE for bands 1 and 3
                         if(satellite.getBand() == observation.getBand() or satellite.getBand() - 1 == observation.getBand()): 
                             satellite.measure(observation)  #measuring
                             #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
@@ -102,11 +108,48 @@ class astar:
                                 childNode.computeEvaluation()
                                 childNode.setParent(currentNode)
                                 childNode.setNextNode(None)
-                                print("SIZE 2")
-                                print(self.__openList.getSize())
+                                print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                print("OpenList size was:{0}".format(self.__openList.getSize()))
                                 self.__openList.insertAtEvaluation(childNode)
-                                print(self.__openList.getSize())
+                                print("Now it is:{0}".format(self.__openList.getSize()))
+                                break
 
+
+                #DOWLINK
+
+                elif (satellite.getActivity() == "measurement"):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
+                    obs = satellite.getObservation()
+                    satellite.downlink()   #the satellite performs the downlinking of the observation
+                    if (self.checkNode(childNode)):
+                                childNode.computeHeuristic(None,"manahattan")
+                                childNode.computeEvaluation()
+                                childNode.setParent(currentNode)
+                                childNode.setNextNode(None)
+                                print("CASE 3: observation {0} is downlinked by satellite {1} ".format(obs.getIdNumber(), satellite.getIdNumber()))
+                                print("OpenList size was:{0}".format(self.__openList.getSize()))
+                                self.__openList.insertAtEvaluation(childNode)
+                                print("Now it is:{0}".format(self.__openList.getSize()))
+                                break
+
+
+                #IDDLE
+
+                else:
+                    satellite.iddle()
+                    if (self.checkNode(childNode)):
+                                childNode.computeHeuristic(None,"manahattan")
+                                childNode.computeEvaluation()
+                                childNode.setParent(currentNode)
+                                childNode.setNextNode(None)
+                                print("CASE 4: satellite {0} is iddle ".format(satellite.getIdNumber()))
+                                print("OpenList size was:{0}".format(self.__openList.getSize()))
+                                self.__openList.insertAtEvaluation(childNode)
+                                print("Now it is:{0}".format(self.__openList.getSize()))
+                                break
+
+               
+
+                
 
 
 
@@ -123,7 +166,7 @@ class astar:
             currentNode = self.__openList.pullFirst()   #getting the first node from the open list
             if self.checkNode(currentNode):  #checking that the node has not been expanded
                 if(self.isGoalNode(currentNode)):  #checking if its the goal node
-                    print("Is finishing?")
+                    print("IT HAS FOUND THE GOAL NODE")
                     self.setGoalNode(currentNode) 
                     self.setFindGoal(True)
                     break                   #as the goal has been found, we can stop
@@ -146,12 +189,12 @@ class astar:
         expandNode = True       #variable that will be returned
         for node in self.__closedList:  #looping through the list of nodes that have already been expaned 
             #print(node.getListObservations())
-            print("Checking node: {0} (closed list) against {1} (current node)".format(node, currentNode))
-            print(currentNode.equals(node))
+           # print("Checking node: {0} (closed list) against {1} (current node)".format(node, currentNode))
+            #print(currentNode.equals(node))
             if(currentNode.equals(node)):  #checking if they are equal
                 expandNode = False      #in that case, our result variable is set to "false"
                 break
-            print("expand node: {0}".format(expandNode))
+            #print("expand node: {0}".format(expandNode))
         return expandNode
 
 
@@ -160,10 +203,16 @@ class astar:
 
     #IS GOAL
 
-
+    #method that checks if the goal has been reached. That means that all the observations have been measured and dowlinked
     def isGoalNode(self, currentNode):
         for observation in currentNode.getListObservations():
             if (observation.getMeasured() == False):
+                print("FALSE 1")
+                return False
+        for satellite in currentNode.getListSatellites():
+            print("Satellite {0} has activity: {1} ".format(satellite.getIdNumber(), satellite.getActivity()))
+            if (satellite.getActivity() != "downlink" and satellite.getActivity() != "iddle" ):
+                print("FALSE 2")
                 return False
         return True
 
@@ -211,9 +260,6 @@ class astar:
     def setFindGoal(self, findGoal):
         self.__findGoal = findGoal
 
-   
-    def setPrintDebug(self, printDebug):
-        printDebug = printDebug
 
     def setOpenList(self, openList):
         self.__openList = openList
