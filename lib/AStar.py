@@ -34,10 +34,10 @@ class astar:
 
         #computing heuristics and initial costs
 
-        self.__initialNode.computeHeuristic(self.__goalNode,'manhattan')     #CORRECT THIS!!!
+        self.__initialNode.computeHeuristic(self.__goalNode,'hamming')     #CORRECT THIS!!!
         self.__initialNode.setCost(0)
         self.__initialNode.computeEvaluation()
-        self.__goalNode.computeHeuristic(self.__goalNode, 'manhattan' )
+        self.__goalNode.computeHeuristic(self.__goalNode, 'hamming' )
 
        
         #generating a list of explored and unexplored nodes
@@ -61,45 +61,50 @@ class astar:
         observationList = currentNode.getListObservations() #list of observations
 
 
-        for satellite in satelliteList:        #this loop will make that all the satellites are in the same time (position)
-            if (satellite.getPosition() >=0  and satellite.getPosition() < 23):                         #CORRECT THIS!!!
-                satellite.setPosition(satellite.getPosition() + 1)
-            elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
-                satellite.setPosition(0)
+        for satellite in satelliteList:        #this loop will make that all the satellites are in the same time (position
+            if (satellite.getHasStartedMoving()):
+                if (satellite.getPosition() >= 0 and satellite.getPosition() < 23):                         #CORRECT THIS!!!
+                    satellite.setPosition(satellite.getPosition() + 1)
+                elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
+                    satellite.setPosition(0)
                 
             #satellite.setObservation(None)      #setting the observations to "None"
             print("Satellite {0} position is : {1}".format(satellite.getIdNumber(),satellite.getPosition()))
 
             
         for satellite in satelliteList:  #moving through the list of satellites to 
+            childNode = Node.node(currentNode)
+            satellite.setHasStartedMoving(True)
             if (satellite.getPosition() > 11): #satellites can only do activies from 0 to 11 
                 continue  #it won't do anything during this time
                
             print("SAT: {0}".format(satellite.getIdNumber()))
             countObservations = 0
             for observation in observationList:     #moving through the list of observations
-                childNode = Node.node(currentNode)  #creating  child node
+                #childNode = Node.node(currentNode)  #creating  child node
 
                 #MEASURE
                 print("Observation position is : {0}".format(observation.getPosition()))
                 #checking that the observation has not been measured and that it has energy
-                if (satellite.getPosition() == observation.getPosition() and not(observation.getMeasured()) and satellite.getEnergy() >= satellite.states.measurement):      #checking that they are in the same position (x axis
+                if (satellite.getPosition() == observation.getPosition() and not(observation.getMeasured()) and satellite.getEnergy() >= satellite.states.measurement and satellite.getObservation() == None):      #checking that they are in the same position (x axis
 
 
                         if (satellite.getIdNumber() == 1):      # CASE for SAT 1
                             if(satellite.getBand() == observation.getBand() or satellite.getBand() - 1 == observation.getBand()): 
                                 satellite.measure(observation)  #measuring
                                 print("CASE 1: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                #childNode = Node.node(currentNode)
                                 if (self.checkNode(childNode)):     #checking if the node has already been expanded
-                                    self.createChildNode(currentNode,childNode)
+                                    self.createChildNode(currentNode, childNode, satelliteList, observationList)
                                     break      #it has already done an activity, so the rest do not need to be checked
 
                         if (satellite.getIdNumber() == 2):      #CASE for SAT 2
                             if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):
                                 satellite.measure(observation)  #measuring
                                 print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                #childNode = Node.node(currentNode)
                                 if (self.checkNode(childNode)):     #checking if the node has already been expanded
-                                    self.createChildNode(currentNode,childNode)
+                                    self.createChildNode(currentNode, childNode, satelliteList, observationList)
                                     break      #it has already done an activity, so the rest do not need to be checked
 
 
@@ -109,8 +114,9 @@ class astar:
                     obs = satellite.getObservation()
                     satellite.downlink()   #the satellite performs the downlinking of the observation
                     print("CASE 3: observation {0} is downlinked by satellite {1} ".format(obs.getIdNumber(), satellite.getIdNumber()))
+                    #childNode = Node.node(currentNode)
                     if (self.checkNode(childNode)):         #checking if the node has already been expanded
-                        self.createChildNode(currentNode,childNode)
+                        self.createChildNode(currentNode, childNode, satelliteList, observationList)
                         break      #it has already done an activity, so the rest do not need to be checked
                           
 
@@ -119,53 +125,62 @@ class astar:
 
                 #CHARGE
 
-                elif (satellite.getEnergy() < satellite.states.measurement or satellite.getEnergy() < satellite.states.downlink):
+                elif (satellite.getEnergy() < satellite.states.measurement or satellite.getEnergy() <  satellite.states.downlink):
                     satellite.charge()
                     print("CASE 4: Satellite {0} is charging ".format(satellite.getIdNumber()))
+                    #childNode = Node.node(currentNode)
                     if (self.checkNode(childNode)):         #checking if the node has already been expanded
-                        self.createChildNode(currentNode,childNode)
+                        self.createChildNode(currentNode, childNode, satelliteList, observationList)
                         break       #it has already done an activity, so the rest do not need to be checked
 
 
+                 #TURN
 
-                #TURN
-
-                elif(satellite.getEnergy() >= satellite.states.turn and satellite.getActivity() != "measurement" and satellite.getPosition() != observation.getPosition()):
+                elif (satellite.getEnergy() >= satellite.states.turn and satellite.getActivity() != "measurement" and satellite.getPosition() != observation.getPosition() and satellite.getBand() != observation.getBand()
+                and( (satellite.getIdNumber() == 1 and satellite.getBand() - 1 != observation.getBand()) or (satellite.getIdNumber() == 2 and satellite.getBand() + 1 != observation.getBand()) ) ):
                     satellite.turn()
                     print("CASE 5: Satellite {0} is turning ".format(satellite.getIdNumber()))
+                    #childNode = Node.node(currentNode)
                     if (self.checkNode(childNode)):         #checking if the node has already been expanded
-                        self.createChildNode(currentNode,childNode)
-                        break       #it has already done an activity, so the rest do not need to be checked
-                    
+                        self.createChildNode(currentNode, childNode, satelliteList, observationList)
+                        break       #it has already done an activity, so the rest do not need to be checked   
+
+                 
 
                 
-                #IDDLE                  #CHECK!!!
+                #IDDLE                  
 
-                else:
+
+                else:#(satellite.getEnergy() >= satellite.states.turn and satellite.getActivity() != "measurement" and satellite.getPosition() != observation.getPosition()):
+                    
                     satellite.iddle()       #do nothing
                     print("CASE 6: satellite {0} is iddle ".format(satellite.getIdNumber()))
-                    if (self.checkNode(childNode)):         #checking if the node has already been expanded
-                         self.createChildNode(currentNode,childNode)
+                    #childNode = Node.node(currentNode)
+                    if (self.checkNode(childNode)):  #checking if the node has already been expanded
+                        self.createChildNode(currentNode, childNode, satelliteList, observationList)
+                        
                                    
                                 
                                 
                 
                 countObservations = countObservations +1
-               
 
+        self.__openList.insertAtEvaluation(childNode)
 
 
 
     #CREATE CHILD NODE
 
     #method that sets the properties of the new node (childNode)
-    def createChildNode(self,currentNode,childNode):
-            childNode.computeHeuristic(None,"manahattan")  #computing heurstic         #CHECK !!!
-            childNode.computeEvaluation()       #computing evalution
+    def createChildNode(self,currentNode,childNode, newListSatellites,newListObservations):
             childNode.setParent(currentNode)    #the parent will be the current node
             childNode.setNextNode(None)         #the next node is currently null
+            childNode.setListSatellites(newListSatellites)
+            childNode.setListObservations(newListObservations)
+            childNode.computeHeuristic(None,"manahattan")  #computing heurstic         #CHECK !!!
+            childNode.computeEvaluation()       #computing evalution
             print("OpenList size was:{0}".format(self.__openList.getSize()))            #REMOVE!!!
-            self.__openList.insertAtEvaluation(childNode)       #inserting in the open list taking into account the evaluation
+            #self.__openList.insertAtEvaluation(childNode)       #inserting in the open list taking into account the evaluation
             print("Now it is:{0}".format(self.__openList.getSize()))                    #REMOVE!!!
                  
 
@@ -191,6 +206,7 @@ class astar:
                             print("------")
                             print(satellite.getActivity())
                             print("------")
+                    print("Length of solution path: {0}".format(len(self.getPath(currentNode))))
                     self.setFindGoal(True)
                     break                   #as the goal has been found, we can stop
                 self.addAdjacentNodes(currentNode)

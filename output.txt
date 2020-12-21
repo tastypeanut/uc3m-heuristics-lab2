@@ -1,0 +1,192 @@
+2
+2
+False
+4
+1
+3
+5
+1
+None
+<lib.Node.node object at 0x7f83c5633cd0>
+<lib.Node.node object at 0x7f83c5633cd0>
+2
+2
+False
+---------------------------------------
+<lib.Node.node object at 0x7f83c555c070>
+None
+<lib.Node.node object at 0x7f83c555c160>
+<lib.Node.node object at 0x7f83c555c190>
+None
+<lib.Node.node object at 0x7f83c555c100>
+<lib.Node.node object at 0x7f83c555c1c0>
+---------------------------------------
+1
+2
+14
+Charging with energy: 18
+18
+---------------------------------------
+False
+True
+False
+False
+---------------------------------------
+Satellite 1 position is : 0
+Satellite 2 position is : 0
+SAT: 1
+Observation position is : 4
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+SAT: 2
+Observation position is : 4
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Satellite 1 position is : 1
+Satellite 2 position is : 1
+SAT: 1
+Observation position is : 4
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+SAT: 2
+Observation position is : 4
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Satellite 1 position is : 2
+Satellite 2 position is : 2
+SAT: 1
+Observation position is : 4
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+SAT: 2
+Observation position is : 4
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 2: observation 3 is measured by satellite 2 
+OpenList size was:0
+Now it is:0
+Satellite 1 position is : 3
+Satellite 2 position is : 3
+SAT: 1
+Observation position is : 4
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 1 is iddle 
+OpenList size was:0
+Now it is:0
+SAT: 2
+Observation position is : 4
+CASE 3: observation 3 is downlinked by satellite 2 
+OpenList size was:0
+Now it is:0
+Satellite 1 position is : 4
+Satellite 2 position is : 4
+SAT: 1
+Observation position is : 4
+CASE 1: observation 1 is measured by satellite 1 
+OpenList size was:0
+Now it is:0
+SAT: 2
+Observation position is : 4
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Satellite 1 position is : 5
+Satellite 2 position is : 5
+SAT: 1
+Observation position is : 4
+CASE 3: observation 1 is downlinked by satellite 1 
+OpenList size was:0
+Now it is:0
+SAT: 2
+Observation position is : 4
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+Observation position is : 2
+CASE 6: satellite 2 is iddle 
+OpenList size was:0
+Now it is:0
+IT HAS FOUND THE GOAL NODE
+------
+downlink
+------
+------
+iddle
+------
+------
+downlink
+------
+------
+iddle
+------
+------
+downlink
+------
+------
+iddle
+------
+------
+downlink
+------
+------
+iddle
+------
+------
+downlink
+------
+------
+iddle
+------
+------
+downlink
+------
+------
+iddle
+------
+------
+downlink
+------
+------
+iddle
+------
+Length of solution path: 7
+Size of OpenList: 0
+
+Size of ClosedList: 6
+
+------------------------------------------
+Length of path: 1
+True
+True
+------------------------------------------
