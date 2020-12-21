@@ -62,7 +62,7 @@ class astar:
 
 
         for satellite in satelliteList:        #this loop will make that all the satellites are in the same time (position)
-            if (satellite.getPosition() >= -1 and satellite.getPosition() < 23):                         #CORRECT THIS!!!
+            if (satellite.getPosition() >=0  and satellite.getPosition() < 23):                         #CORRECT THIS!!!
                 satellite.setPosition(satellite.getPosition() + 1)
             elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
                 satellite.setPosition(0)
