@@ -39,7 +39,7 @@ class satellite:
 	#It will initially be located in ban 1, so it will be able to access band 0 as well. If it wants to change to the next band, it will move to band 2, being able
 	#to access band 2 - 1 = 1 as well.
 	#In the case of the REST of the satellites, they can access its current band and one more (__band + 1). For instance, satellite 2 is intially located in band 2,
-	# and it can also access band 2 + 1 = 3. If it changes to the other band, it will be able to access bands 2 and 2-1= 1.
+	# and it can also access band 2 + 1 = 3. If it changes to the other band, it will be able to access bands 1 and 1+1= 2.
 	def turn(self):
 		if (self.__observation == None and self.__energy >= self.states.turn):   #cheking there's enough energy
 			#SAT1

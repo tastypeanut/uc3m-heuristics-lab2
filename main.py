@@ -166,8 +166,8 @@ def main():
     listenergy = [50, 1, 3, 4, 4]
 
     satelliteliststart = []
-    satelliteliststart.append(Satellite.satellite(1,0,-1,"",listenergy))
-    satelliteliststart.append(Satellite.satellite(2,3,-1,"",listenergy))
+    satelliteliststart.append(Satellite.satellite(1,1,-1,"",listenergy))
+    satelliteliststart.append(Satellite.satellite(2,2,-1,"",listenergy))
     #satelliteliststart[0].setHasObservation(True)
 
     satellitelistgoal = []
