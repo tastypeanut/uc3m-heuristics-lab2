@@ -62,7 +62,7 @@ class astar:
 
 
         for satellite in satelliteList:        #this loop will make that all the satellites are in the same time (position)
-            if (satellite.getPosition() >= -1 and satellite.getPosition() < 23):                                             #CORRECT THIS!!!
+            if (satellite.getPosition() >= -1 and satellite.getPosition() < 23):                         #CORRECT THIS!!!
                 satellite.setPosition(satellite.getPosition() + 1)
             elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
                 satellite.setPosition(0)
@@ -74,7 +74,7 @@ class astar:
         for satellite in satelliteList:  #moving through the list of satellites to 
             if (satellite.getPosition() > 11): #satellites can only do activies from 0 to 11 
                 continue  #it won't do anything during this time
-                
+               
             print("SAT: {0}".format(satellite.getIdNumber()))
             countObservations = 0
             for observation in observationList:     #moving through the list of observations
@@ -95,7 +95,7 @@ class astar:
                                     childNode.computeEvaluation()
                                     childNode.setParent(currentNode)
                                     childNode.setNextNode(None)
-                                    print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                    print("CASE 1: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
                                     print("OpenList size was:{0}".format(self.__openList.getSize()))
                                     self.__openList.insertAtEvaluation(childNode)
                                     print("Now it is:{0}".format(self.__openList.getSize()))
@@ -118,9 +118,9 @@ class astar:
                                     break   #it has already done an activity, so the rest do not need to be checked
 
 
-                #DOWLINK
+                #DOWLINK    
 
-                elif (satellite.getActivity() == "measurement" and satellite.getEnergy() >= satellite.states.measurement):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
+                elif (satellite.getActivity() == "measurement" and satellite.getEnergy() >= satellite.states.downlink):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
                     obs = satellite.getObservation()
                     satellite.downlink()   #the satellite performs the downlinking of the observation
                     if (self.checkNode(childNode)):
@@ -154,7 +154,7 @@ class astar:
                     
 
                 
-                #IDDLE
+                #IDDLE                  #CHECK!!!
 
                 else:
                     satellite.iddle()       #do nothing
@@ -191,6 +191,11 @@ class astar:
                 if(self.isGoalNode(currentNode)):  #checking if its the goal node
                     print("IT HAS FOUND THE GOAL NODE")
                     self.setGoalNode(currentNode) 
+                    for node in self.getPath(currentNode):
+                        for satellite in node.getListSatellites():
+                            print("------")
+                            print(satellite.getActivity())
+                            print("------")
                     self.setFindGoal(True)
                     break                   #as the goal has been found, we can stop
                 self.addAdjacentNodes(currentNode)
@@ -228,12 +233,12 @@ class astar:
 
     #method that checks if the goal has been reached. That means that all the observations have been measured and dowlinked
     def isGoalNode(self, currentNode):
-        for observation in currentNode.getListObservations():
+        for observation in currentNode.getListObservations():       #checking that all the observations have been measured
             if (observation.getMeasured() == False):
                 return False
-        for satellite in currentNode.getListSatellites():
-            if (satellite.getActivity() != "downlink" and satellite.getActivity() != "iddle" ):
-                return False
+        for satellite in currentNode.getListSatellites():       #checking that it has been downlinked (if variable activity equals "measurement", 
+            if (satellite.getActivity() == "measurement"):      # it means that there's a satellite that has not finished downlinking)
+                return False   
         return True
 
 
@@ -256,7 +261,7 @@ class astar:
         path = []
         path.append(currentNode)
         parent = currentNode.getParent()
-        while  parent != None :
+        while parent != None:
             path.insert(0,parent)
             currentNode = parent
             parent = currentNode.getParent()
