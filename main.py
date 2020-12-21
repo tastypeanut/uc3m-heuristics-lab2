@@ -176,9 +176,10 @@ def main():
 
     observationliststart = []
     observationliststart.append (Observation.observation(1,1,0))
-    #observationliststart.append (Observation.observation(2,2,1))
-    #observationliststart.append (Observation.observation(3,2,3))
-    #observationliststart.append (Observation.observation(4,1,4))
+    observationliststart.append (Observation.observation(2,2,2))
+    observationliststart.append (Observation.observation(3,2,3))
+    observationliststart.append (Observation.observation(4,1,4))
+    observationliststart.append (Observation.observation(5,1,7))
 
     observationlistgoal = []
     #observationlistgoal.append (Observation.observation(1,1,11))

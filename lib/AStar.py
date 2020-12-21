@@ -75,44 +75,47 @@ class astar:
             if (satellite.getPosition() > 11): #satellites can only do activies from 0 to 11 
                 continue  #it won't do anything during this time
                 
+            print("SAT: {0}".format(satellite.getIdNumber()))
             for observation in observationList:     #moving through the list of observations
                 childNode = Node.node(currentNode)  #creating  child node
 
                 #MEASURE
+                print("Observation position is : {0}".format(observation.getPosition()))
+                if (satellite.getPosition() == observation.getPosition()):      #checking that they are in the same position (x axis)
+                    print("SAME POSITION")
 
-                if (satellite.getPosition() == observation.getPosition()): #checking that they are in the same position (x axis)
+                    if ( not(observation.getMeasured())):       #checking that the observation has not been measured
+                        if (satellite.getBand() == 0 or satellite.getBand() == 2): #CASE for bands 0 and 2
+                            if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):
+                                satellite.measure(observation)  #measuring
+                                #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
+                                    #observationList.remove(observation)   #removing the observation from the list
+                                if (self.checkNode(childNode)):
+                                    childNode.computeHeuristic(None,"manahattan")
+                                    childNode.computeEvaluation()
+                                    childNode.setParent(currentNode)
+                                    childNode.setNextNode(None)
+                                    print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                    print("OpenList size was:{0}".format(self.__openList.getSize()))
+                                    self.__openList.insertAtEvaluation(childNode)
+                                    print("Now it is:{0}".format(self.__openList.getSize()))
+                                    break       #it has already done an activity, so the rest do not need to be checked
 
-                    if (satellite.getBand() == 0 or satellite.getBand() == 2): #CASE for bands 0 and 2
-                        if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):
-                            satellite.measure(observation)  #measuring
-                            #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
-                                #observationList.remove(observation)   #removing the observation from the list
-                            if (self.checkNode(childNode)):
-                                childNode.computeHeuristic(None,"manahattan")
-                                childNode.computeEvaluation()
-                                childNode.setParent(currentNode)
-                                childNode.setNextNode(None)
-                                print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
-                                print("OpenList size was:{0}".format(self.__openList.getSize()))
-                                self.__openList.insertAtEvaluation(childNode)
-                                print("Now it is:{0}".format(self.__openList.getSize()))
-                                break
-
-                    if (satellite.getBand() == 1 or satellite.getBand() == 3): # CASE for bands 1 and 3
-                        if(satellite.getBand() == observation.getBand() or satellite.getBand() - 1 == observation.getBand()): 
-                            satellite.measure(observation)  #measuring
-                            #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
-                               # observationList.remove(observation)  #removing the observation from the list
-                            if (self.checkNode(childNode)):
-                                childNode.computeHeuristic(None,"manahattan")
-                                childNode.computeEvaluation()
-                                childNode.setParent(currentNode)
-                                childNode.setNextNode(None)
-                                print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
-                                print("OpenList size was:{0}".format(self.__openList.getSize()))
-                                self.__openList.insertAtEvaluation(childNode)
-                                print("Now it is:{0}".format(self.__openList.getSize()))
-                                break
+                        if (satellite.getBand() == 1 or satellite.getBand() == 3): # CASE for bands 1 and 3
+                            if(satellite.getBand() == observation.getBand() or satellite.getBand() - 1 == observation.getBand()): 
+                                satellite.measure(observation)  #measuring
+                                #if (satellite.getActivity() == "measurement"):   #making sure that the measurement has been performed
+                                # observationList.remove(observation)  #removing the observation from the list
+                                if (self.checkNode(childNode)):
+                                    childNode.computeHeuristic(None,"manahattan")
+                                    childNode.computeEvaluation()
+                                    childNode.setParent(currentNode)
+                                    childNode.setNextNode(None)
+                                    print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
+                                    print("OpenList size was:{0}".format(self.__openList.getSize()))
+                                    self.__openList.insertAtEvaluation(childNode)
+                                    print("Now it is:{0}".format(self.__openList.getSize()))
+                                    break   #it has already done an activity, so the rest do not need to be checked
 
 
                 #DOWLINK
@@ -129,13 +132,13 @@ class astar:
                                 print("OpenList size was:{0}".format(self.__openList.getSize()))
                                 self.__openList.insertAtEvaluation(childNode)
                                 print("Now it is:{0}".format(self.__openList.getSize()))
-                                break
+                                break   #it has already done an activity, so the rest do not need to be checked
 
 
-                #IDDLE
+                 #IDDLE
 
                 else:
-                    satellite.iddle()
+                    satellite.iddle()       #do nothing
                     if (self.checkNode(childNode)):
                                 childNode.computeHeuristic(None,"manahattan")
                                 childNode.computeEvaluation()
@@ -145,7 +148,7 @@ class astar:
                                 print("OpenList size was:{0}".format(self.__openList.getSize()))
                                 self.__openList.insertAtEvaluation(childNode)
                                 print("Now it is:{0}".format(self.__openList.getSize()))
-                                break
+                                
 
                
 
@@ -207,12 +210,9 @@ class astar:
     def isGoalNode(self, currentNode):
         for observation in currentNode.getListObservations():
             if (observation.getMeasured() == False):
-                print("FALSE 1")
                 return False
         for satellite in currentNode.getListSatellites():
-            print("Satellite {0} has activity: {1} ".format(satellite.getIdNumber(), satellite.getActivity()))
             if (satellite.getActivity() != "downlink" and satellite.getActivity() != "iddle" ):
-                print("FALSE 2")
                 return False
         return True
 
