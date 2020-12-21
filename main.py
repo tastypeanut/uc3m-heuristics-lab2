@@ -163,11 +163,11 @@ def main():
 
     print("---------------------------------------")
 
-    listenergy = [50, 1, 3, 4, 4]
+    listenergy = [1, 1, 3, 4, 4]
 
     satelliteliststart = []
-    satelliteliststart.append(Satellite.satellite(1,1,-1,"",listenergy))
-    satelliteliststart.append(Satellite.satellite(2,2,-1,"",listenergy))
+    satelliteliststart.append(Satellite.satellite(1,1,0,"iddle",listenergy))
+    satelliteliststart.append(Satellite.satellite(2,2,0,"iddle",listenergy))
     #satelliteliststart[0].setHasObservation(True)
 
     satellitelistgoal = []
@@ -175,13 +175,13 @@ def main():
     #satellitelistgoal.append(Satellite.satellite(2,2,7,"charge",listenergy))
 
     observationliststart = []
-    observationliststart.append (Observation.observation(1,1,0))
-    observationliststart.append (Observation.observation(2,2,2))
-    observationliststart.append (Observation.observation(3,2,3))
-    observationliststart.append (Observation.observation(4,1,4))
-    observationliststart.append (Observation.observation(5,1,5))
-    observationliststart.append (Observation.observation(6,1,5))
-    observationliststart.append (Observation.observation(7,1,5))
+    
+    observationliststart.append (Observation.observation(1,1,4))
+    observationliststart.append(Observation.observation(3, 2, 2))
+    
+    
+   
+    
 
     observationlistgoal = []
     #observationlistgoal.append (Observation.observation(1,1,11))

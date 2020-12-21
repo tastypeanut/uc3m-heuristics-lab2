@@ -52,9 +52,7 @@ class node:
     def computeHeuristic(self, finalNode, heuristicType):
         self.heuristic = 0
 
-        for obs in self.__listObservations:
-            if heuristicType == 'manhattan':
-                result = 5
+         
 
         #Manhattan distance
         
