@@ -123,12 +123,12 @@ class astar:
                 elif (satellite.getActivity() == "measurement" and satellite.getEnergy() >= satellite.states.measurement):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
                     obs = satellite.getObservation()
                     satellite.downlink()   #the satellite performs the downlinking of the observation
+                    print("CASE 3: observation {0} is downlinked by satellite {1} ".format(obs.getIdNumber(), satellite.getIdNumber()))
                     if (self.checkNode(childNode)):
                                 childNode.computeHeuristic(None,"manahattan")
                                 childNode.computeEvaluation()
                                 childNode.setParent(currentNode)
                                 childNode.setNextNode(None)
-                                print("CASE 3: observation {0} is downlinked by satellite {1} ".format(obs.getIdNumber(), satellite.getIdNumber()))
                                 print("OpenList size was:{0}".format(self.__openList.getSize()))
                                 self.__openList.insertAtEvaluation(childNode)
                                 print("Now it is:{0}".format(self.__openList.getSize()))
@@ -154,7 +154,7 @@ class astar:
                     
 
                 
-                #IDDLE
+                #IDDLE                          #CORRECT CASES!!!
 
                 else:
                     satellite.iddle()       #do nothing
