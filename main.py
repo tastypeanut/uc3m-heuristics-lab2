@@ -19,35 +19,33 @@ def main():
 
     filelinelist = fileraw.read().split('\n')
 
-    #print(filelinelist[0].replace('OBS: ', '').split(';'))
-    #print(re.sub('([OBS: ]|[()])', '', filelinelist[0]).split(';'))
     observationlist = []
     satellitelist = []
-    idcounter = 0
-
-    for obscoord in re.sub('([OBS: ]|[()])', '', filelinelist[0]).split(';'):
-        idcounter += 1
-        obscoordlist = obscoord.split(',')
-        observationlist.append(Observation.observation(idcounter, obscoordlist[0], obscoordlist[1]))
-
-    idcounter = 0
-
-    for position in range(1, len(filelinelist)):
-        idcounter += 1
-        #for satellite in re.sub('(SAT)\w+: {1}', '', filelinelist[position]).split(';'):
-        #print(re.sub('(SAT)\w+: {1}', '', filelinelist[position]).split(';'))
-        poscoordlist = re.sub('(SAT)\w+: {1}', '', filelinelist[position]).split(';')
-        #print(idcounter, (2*idcounter-2), 0, "iddle", poscoordlist)
-        satellitelist.append(Satellite.satellite(idcounter, (2*idcounter-2), 0, "iddle", poscoordlist))
 
     try:
-       exit()
+        idcounter = 0
+
+        for obscoord in re.sub('([OBS: ]|[()])', '', filelinelist[0]).split(';'):
+            idcounter += 1
+            obscoordlist = obscoord.split(',')
+            observationlist.append(Observation.observation(idcounter, obscoordlist[0], obscoordlist[1]))
+            #print("obs", idcounter, obscoordlist[0], obscoordlist[1])
+        idcounter = 0
+
+        for position in range(1, len(filelinelist)):
+            idcounter += 1
+            poscoordlist = re.sub('(SAT)\w+: {1}', '', filelinelist[position]).split(';')
+            satellitelist.append(Satellite.satellite(idcounter, (idcounter), 0, "iddle", poscoordlist))
+            #print("pos", idcounter, (idcounter), 0, "iddle", poscoordlist)
     except:
         print(Back.RED + " Object creation failed: Invalid file contents " + Style.RESET_ALL)
         exit(1)
     
 
-
+    InitialNode = Node.node(None, satellitelist, observationlist)
+    FinalNode = Node.node(None, None, None)
+    astar = AStar.astar(InitialNode, FinalNode)
+    astar.algorithm()
     fileraw.close()
 
 
