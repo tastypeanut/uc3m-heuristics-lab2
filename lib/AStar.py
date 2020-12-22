@@ -147,7 +147,8 @@ class astar:
                 #it will turn into another band if it has enough energy, the previous activity was not "measurent" (it should downlink it), and there's no 
                 #observation that can be measured at the moment
                 elif (satellite.getEnergy() >= satellite.states.turn and satellite.getActivity() != "measurement" and satellite.getPosition() != observation.getPosition() and satellite.getBand() != observation.getBand()
-                and( (satellite.getIdNumber() == 1 and satellite.getBand() - 1 != observation.getBand()) or (satellite.getIdNumber() == 2 and satellite.getBand() + 1 != observation.getBand()) ) ):
+                and( (satellite.getIdNumber() == 1 and satellite.getBand() - 1 != observation.getBand()) or (satellite.getIdNumber() == 2 and satellite.getBand() + 1 != observation.getBand()) ) 
+                and ((satellite.getPosition() +1 != observation.getPosition() and not(observation.getMeasured())) )):
                    
                     satellite.turn()    #turning
                     print("CASE 5: Satellite {0} is turning ".format(satellite.getIdNumber()))
@@ -192,21 +193,20 @@ class astar:
             childNode.setListObservations(newListObservations)
             childNode.computeHeuristic(None,"manahattan")  #computing heurstic         #CHECK !!!
             childNode.computeEvaluation()       #computing evalution
-            print("OpenList size was:{0}".format(self.__openList.getSize()))            #REMOVE!!!
+           # print("OpenList size was:{0}".format(self.__openList.getSize()))                #REMOVE!!!
             #self.__openList.insertAtEvaluation(childNode)       #inserting in the open list taking into account the evaluation
-            print("Now it is:{0}".format(self.__openList.getSize()))                    #REMOVE!!!
+           # print("Now it is:{0}".format(self.__openList.getSize()))                        #REMOVE!!!
                  
 
 
 
     #ALGORITHM
-     #------------------------------------------------------------------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------
 
     #implementation of the A* algorithm
     def algorithm(self):
-       # time1 = int(time.time() * 1000) 
-       # initialTime = int(round(time1 * 1000)) #this will be used to take the execution time
-
+        initialTime = int(time.time() * 1000)   #this will be used to take the execution time
+       
         currentNode = None  #defining a node
 
         while not(self.__openList.isEmpty()):    #checking that the open list is not empty
@@ -225,12 +225,12 @@ class astar:
                     break                   #as the goal has been found, we can stop
                 self.addAdjacentNodes(currentNode)
                 self.__closedList.append(currentNode)  #including the node in the closed list
-       # finalTime = int(round(time.time()))   #final time
-        
 
-       # time = (finalTime - initialTime)  #computing the difference
-        return 5
-        #return time
+        finalTime = int(round(time.time()))   #final time
+        resultTime = (finalTime - initialTime)  #computing the difference
+
+        return resultTime       #returning the time
+        
 
 
 

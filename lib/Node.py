@@ -4,16 +4,14 @@ import lib.objects.Observation as Observation
 
 class node:
     __cost = None
-    __heuristic = None
+    __heuristic = None       #heuristic value comming from the function associated to this node
     __evaluation = None      #Evaluation value. It gives preferences when ordering the open list
-    __parent = None
-    __nextNodeList = None
+    __parent = None          #parent node
+    __nextNodeList = None    #next element of the open list
+    __listSatellites = []    #list of satellites
+    __listObservations = []  #list of observations that need to be measured
 
-    #list of satellites
-    __listSatellites = []
 
-    #list of observations that need to be measured
-    __listObservations = []
 
 
     #CONSTRUCTOR
@@ -59,7 +57,7 @@ class node:
                 for observation in self.__listObservations:
                     self.setHeuristic(abs(satellite.getPosition() - observation.getPosition()) + abs(satellite.getBand() - observation.getBand()))
 
-        elif(heuristicType == "hamming"):
+        elif(heuristicType == "hamming"):       #Hamming distance
             for n in range(len(finalNode.getListSatellites())):
                 if (self.getListSatellites()[n] != finalNode.getListSatellites()[n]):
                     self.setHeuristic(self.getHeuristic() +1 )

@@ -14,14 +14,14 @@ def main():
     try:
         fileraw = open(sys.argv[1], 'r')
     except:
-        print(Back.RED + " Error happened when opening the input file " + Style.RESET_ALL)
+        print(Back.RED + " Error happened when opening the input file " + Style.RESET_ALL)  #error if problem with the input file
         exit(1)
 
-    filelinelist = fileraw.read().split('\n')
+    filelinelist = fileraw.read().split('\n')   #spliting the input file by lines
     fileraw.close()
 
-    observationliststart = []
-    satelliteliststart = []
+    observationListStart = []   #initial list of observations
+    satelliteListStart = []     #initial list of satellites
 
     try:
         idcounter = 0
@@ -29,7 +29,7 @@ def main():
         for obscoord in re.sub('([OBS: ]|[()])', '', filelinelist[0]).split(';'):
             idcounter += 1
             obscoordlist = list(map(int, obscoord.split(',')))
-            observationliststart.append(Observation.observation(idcounter, obscoordlist[0], obscoordlist[1]))
+            observationListStart.append(Observation.observation(idcounter, obscoordlist[0], obscoordlist[1]))   #including observations
             #print("obs", idcounter, obscoordlist[0], obscoordlist[1])
 
         idcounter = 0
@@ -37,23 +37,23 @@ def main():
         for position in range(1, len(filelinelist)):
             idcounter += 1
             poscoordlist = list(map(int, re.sub('(SAT)\w+: {1}', '', filelinelist[position]).split(';')))
-            satelliteliststart.append(Satellite.satellite(idcounter, (idcounter), 0, "iddle", poscoordlist))
+            satelliteListStart.append(Satellite.satellite(idcounter, (idcounter), 0, "iddle", poscoordlist))    #including satellites
             #print("pos", idcounter, (idcounter), 0, "iddle", poscoordlist)
 
     except:
-        print(Back.RED + " Object creation failed: Invalid file contents " + Style.RESET_ALL)
+        print(Back.RED + " Object creation failed: Invalid file contents " + Style.RESET_ALL)   #error if the input file format is not correct
         exit(1)
 
-    satellitelistgoal = []
-    observationlistgoal = []
+    satelliteListGoal = []      #final list of satellites
+    observationListGoal = []    #finallist of observations
 
-    InitialNode = Node.node(None, satelliteliststart, observationliststart)
-    FinalNode = Node.node(None, satellitelistgoal, observationlistgoal)
-    astar = AStar.astar(InitialNode, FinalNode)
+    InitialNode = Node.node(None, satelliteListStart, observationListStart)     #creating the initial node
+    FinalNode = Node.node(None, satelliteListGoal, observationListGoal)         #creating the final node
+    astar = AStar.astar(InitialNode, FinalNode)                                 #creating A* object
 
     stdout_fileno = sys.stdout
     sys.stdout = open('{0}.output'.format(sys.argv[1]), 'w')
-    astar.algorithm()
+    astar.algorithm()                                                           #calling the A* algorithm method
     sys.stdout.close()
     sys.stdout = stdout_fileno
 
