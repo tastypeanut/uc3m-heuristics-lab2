@@ -18,6 +18,7 @@ class astar:
     __initialNode = None #initial node of the problem
     __goalNode = None #goal node
     __findGoal = None #this variable is used to check if the goal has been found
+    __heuristicType = None  #heuristic type that has to be calculated
    
 
 
@@ -25,20 +26,22 @@ class astar:
     #------------------------------------------------------------------------------------------------------------------------------ 
 
     #it receives the initial and goal states
-    def __init__(self, initialNode, goalNode):
+    def __init__(self, initialNode, goalNode, heuristicType):
     
        
         self.setInitialNode(initialNode)
         self.setGoalNode(goalNode)
-        self.setFindGoal(False) #the findGoal variable is set to "false" 
+        self.setFindGoal(False)  #the findGoal variable is set to "false" 
+        self.setHeuristicType(heuristicType)
+       
 
 
         #computing heuristics and initial costs
 
-        self.__initialNode.computeHeuristic(self.__goalNode,'hamming')     #CORRECT THIS!!!
+        self.__initialNode.computeHeuristic(self.__goalNode,self.__heuristicType)     
         self.__initialNode.setCost(0)
         self.__initialNode.computeEvaluation()
-        self.__goalNode.computeHeuristic(self.__goalNode, 'hamming' )
+        self.__goalNode.computeHeuristic(self.__goalNode, self.__heuristicType)
 
        
         #generating a list of explored and unexplored nodes
@@ -77,8 +80,12 @@ class astar:
         for satellite in satelliteList:  #moving through the list of satellites to 
             childNode = Node.node(currentNode)
             satellite.setHasStartedMoving(True)
-            if (satellite.getPosition() > 11): #satellites can only do activies from 0 to 11 
-                continue  #it won't do anything during this time
+            if (satellite.getPosition() > 11):  #satellites can only do activies from 0 to 11 
+                 satellite.iddle()   #the satellite performs the downlinking of the observation
+                    #childNode = Node.node(currentNode)
+                 if (self.checkNode(childNode)):         #checking if the node has already been expanded
+                    self.createChildNode(currentNode, childNode, satelliteList, observationList)
+                 continue  #it won't do anything during this time
                
             print("SAT: {0}".format(satellite.getIdNumber()))                                   #REMOVE THIS!!!
             countObservations = 0   #auxiliary variable to count the number of observations
@@ -191,7 +198,7 @@ class astar:
             childNode.setNextNode(None)         #the next node is currently null
             childNode.setListSatellites(newListSatellites)
             childNode.setListObservations(newListObservations)
-            childNode.computeHeuristic(None,"manahattan")  #computing heurstic         #CHECK !!!
+            childNode.computeHeuristic(None,self.__heuristicType)  #computing heurstic        
             childNode.computeEvaluation()       #computing evalution
            # print("OpenList size was:{0}".format(self.__openList.getSize()))                #REMOVE!!!
             #self.__openList.insertAtEvaluation(childNode)       #inserting in the open list taking into account the evaluation
@@ -205,29 +212,31 @@ class astar:
 
     #implementation of the A* algorithm
     def algorithm(self):
-        initialTime = int(time.time() * 1000)   #this will be used to take the execution time
+        initialTime = time.time()   #this will be used to take the execution time
        
         currentNode = None  #defining a node
 
         while not(self.__openList.isEmpty()):    #checking that the open list is not empty
-            currentNode = self.__openList.pullFirst()   #getting the first node from the open list
-            if self.checkNode(currentNode):  #checking that the node has not been expanded
-                if(self.isGoalNode(currentNode)):  #checking if its the goal node
-                    print("IT HAS FOUND THE GOAL NODE")
-                    self.setGoalNode(currentNode) 
-                    for node in self.getPath(currentNode):
-                        for satellite in node.getListSatellites():
-                            print("------")
-                            print(satellite.getActivity())
-                            print("------")
-                    print("Length of solution path: {0}".format(len(self.getPath(currentNode))))
-                    self.setFindGoal(True)
-                    break                   #as the goal has been found, we can stop
-                self.addAdjacentNodes(currentNode)
-                self.__closedList.append(currentNode)  #including the node in the closed list
+            currentNode = self.__openList.pullFirst()  #getting the first node from the open list
+            
+            #currentNode.getListSatellites()[0].setPosition(3)
+            #if self.checkNode(currentNode):  #checking that the node has not been expanded
+            if(self.isGoalNode(currentNode)):  #checking if its the goal node
+                print("IT HAS FOUND THE GOAL NODE")
+                self.setGoalNode(currentNode) 
+                for node in self.getPath(currentNode):
+                    for satellite in node.getListSatellites():
+                        print("------")
+                        print(satellite.getActivity())
+                        print("------")
+                print("Length of solution path: {0}".format(len(self.getPath(currentNode))))
+                self.setFindGoal(True)
+                break                   #as the  goal has been found, we can stop
+            self.addAdjacentNodes(currentNode)
+            self.__closedList.append(currentNode)  #including the node in the closed list
 
-        finalTime = int(round(time.time()))   #final time
-        resultTime = (finalTime - initialTime)  #computing the difference
+        finalTime = time.time()  #final time 
+        resultTime = abs(finalTime - initialTime)  #computing the difference
 
         return resultTime       #returning the time
         
@@ -247,7 +256,7 @@ class astar:
            # print("Checking node: {0} (closed list) against {1} (current node)".format(node, currentNode))
             #print(currentNode.equals(node))
             if(currentNode.equals(node)):  #checking if they are equal
-                expandNode = False      #in that case, our result variable is set to "false"
+                expandNode = True      #in that case, our result variable is set to "false"
                 break
             #print("expand node: {0}".format(expandNode))
         return expandNode
@@ -322,6 +331,9 @@ class astar:
     def setClosedList(self, closedList):
         self.__closedList = closedList
 
+    def setHeuristicType(self, heuristicType):
+        self.__heuristicType = heuristicType
+
 
     
         
@@ -340,5 +352,6 @@ class astar:
     def getClosedList(self):
         return self.__closedList
 
-   
-
+    
+    def getHeuristicType(self):
+        return self.__heuristicType

@@ -73,8 +73,7 @@ class node:
 
     #method that checks if the information from another node is equal to the one we have
     def equals (self,otherNode):
-        return False
-        print("In method equals, observations: {0} {1}".format(len(self.__listObservations), range(len(self.__listObservations))))
+        #print("In method equals, observations: {0} {1}".format(len(self.__listObservations), range(len(self.__listObservations))))
         #checking that the lists of observations are equal, but looping through through them
         for x in range(len(self.__listObservations)):
             if (self.__listObservations[x].getIdNumber() != otherNode.getListObservations()[x].getIdNumber()
@@ -84,7 +83,7 @@ class node:
                 return False
 
         #checking that the lists of satellites are equal, but looping through through them
-        print("In method equals, satellites: {0} {1}".format(len(self.__listObservations), range(len(self.__listObservations))))
+        #print("In method equals, satellites: {0} {1}".format(len(self.__listObservations), range(len(self.__listObservations))))
         for x in range(len(self.__listSatellites)):
             if (self.__listSatellites[x].getIdNumber() != otherNode.getListSatellites()[x].getIdNumber()
             or self.__listSatellites[x].getBand() != otherNode.getListSatellites()[x].getBand()

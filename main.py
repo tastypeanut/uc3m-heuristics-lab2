@@ -49,11 +49,14 @@ def main():
 
     InitialNode = Node.node(None, satelliteListStart, observationListStart)     #creating the initial node
     FinalNode = Node.node(None, satelliteListGoal, observationListGoal)         #creating the final node
-    astar = AStar.astar(InitialNode, FinalNode)                                 #creating A* object
+    astar = AStar.astar(InitialNode, FinalNode, sys.argv[2])                    #creating A* object (sys.argv[2] is the heurtistic type)
 
     stdout_fileno = sys.stdout
     sys.stdout = open('{0}.output'.format(sys.argv[1]), 'w')
-    astar.algorithm()                                                           #calling the A* algorithm method
+    statoutput = open('{0}.statistics'.format(sys.argv[1]), 'w')
+    print("Total execution time: ", astar.algorithm(), " seconds.", file=statoutput)  #calling the A* algorithm method
+    print("#Steps: ", astar.getPath(astar.getGoalNode()), file=statoutput)
+   # print("#Expansions: ", astar.getCountExpansion(), file = statoutput) 
     sys.stdout.close()
     sys.stdout = stdout_fileno
 
