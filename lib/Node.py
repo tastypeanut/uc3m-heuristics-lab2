@@ -17,6 +17,7 @@ class node:
 
 
     #CONSTRUCTOR
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
 
     def __init__(self, *args): 
@@ -44,22 +45,32 @@ class node:
 
 
     #COMPUTE HEURISTIC
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
 
     #method that computes the heuristic
     #it receives the final node to where to the heuristics will be calculated and 
     #the heuristic function that will be employed. There are two options: Manhattan and Hamming distance
     def computeHeuristic(self, finalNode, heuristicType):
-        self.heuristic = 0
+        self.setHeuristic(0)
 
-         
+        if(heuristicType == "manhattan"):       #Manhattan distance
+            for satellite in self.__listSatellites:
+                for observation in self.__listObservations:
+                    self.setHeuristic(abs(satellite.getPosition() - observation.getPosition()) + abs(satellite.getBand() - observation.getBand()))
 
-        #Manhattan distance
-        
+        elif(heuristicType == "hamming"):
+            for n in range(len(finalNode.getListSatellites())):
+                if (self.getListSatellites()[n] != finalNode.getListSatellites()[n]):
+                    self.setHeuristic(self.getHeuristic() +1 )
+			       
+                    
+            
 
 
 
     #EQUALS
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
 
     #method that checks if the information from another node is equal to the one we have
@@ -89,10 +100,11 @@ class node:
 
     
     #COMPUTE EVALUATION
+    #------------------------------------------------------------------------------------------------------------------------------ 
     
     #method that executes the evaluation function of the problem for the node
     def computeEvaluation(self):
-        self.__evaluation = self.__cost + 5
+        self.__evaluation = self.__cost + self.__heuristic
 
 
     
@@ -101,6 +113,7 @@ class node:
 
 
     #SETTERS
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
  
     def setCost(self, cost):
@@ -127,9 +140,9 @@ class node:
 
    
      #GETTERS
+     #------------------------------------------------------------------------------------------------------------------------------ 
 
      
-
     def getCost(self):
         return self.__cost
 

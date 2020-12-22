@@ -2,10 +2,9 @@ import lib.objects.States as States
 
 #this class represents each of the satellites that there are in the problem
 class satellite:
-	#a satellite is characterized for having an id, its current level of energy and position
-	__idNumber = None
-	__band = None
-	__position = None
+	__idNumber = None		#id to recognize each satellite. It is simply a number
+	__band = None			#band (y axis) where the satellite is currently located
+	__position = None		#position (hour, x axis) where the satellite is currently located
 	__energy = None  #energy levels that the satellite has at the moment
 	__capacity = None #maximum energy capacity of the satellite (equal to the initial energy)
 	__hasStartedMoving = False		#varible to know if the satellite has started moving (true) or not (false)
@@ -19,8 +18,11 @@ class satellite:
 
 
 #CONSTRUCTOR
+#------------------------------------------------------------------------------------------------------------------------------
 
-#it receives and id, position and a list with the energy levels (costs and initial energy of the satellite)
+
+
+#it receives and id, position, band, last activity and a list with the energy levels (costs and initial energy of the satellite)
 	def __init__(self, idNumber, band, position, activity, energyCostList):
 		self.setIdNumber(idNumber)
 		self.setPosition(position)
@@ -29,12 +31,13 @@ class satellite:
 		self.setCapacity(energyCostList[4])
 		self.setActivity(activity)
 		self.setEnergyCostList(energyCostList)
-		#self.setHasObervation(False) #initially, the satellite has not taken any observation
+		
 
 
 
 
 	#CHANGE BAND
+ #------------------------------------------------------------------------------------------------------------------------------	
 
 	#this method performs the activity of changing the band of a satellite. 
 	#It is important to take into account that, in the case of the SAT1, we are assuming that it can always access the current band and one less (__band - 1)
@@ -64,6 +67,7 @@ class satellite:
 
 
 	#CHARGE
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	#method that charges the satellite's energy
 	def charge(self):
@@ -76,6 +80,7 @@ class satellite:
 
 
 	#MEASURE
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	#this method simply allows the satellite to take a measurent if it does not have one at the moment
 	def measure(self,observation):
@@ -93,6 +98,7 @@ class satellite:
 
 
 	#DOWNLINK
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	#when a satellite downlinks the observation (if it has one), we set its variable to "false" and substract the cost
 	def downlink (self):
@@ -108,18 +114,19 @@ class satellite:
 
 	
 	#IDDLE
+ 	#------------------------------------------------------------------------------------------------------------------------------
 
+	#this method simply changes the activity variable to "iddle"
 	def iddle(self):
 		self.__activity = "iddle"
 
 
 
-	#def executeNextAction(self):
-
 
 
 
 	#SETTERS
+	#------------------------------------------------------------------------------------------------------------------------------	
 	
 	def setIdNumber(self, idNumber):
 		self.__idNumber = idNumber
@@ -151,6 +158,7 @@ class satellite:
 	
 
 	#GETTERS
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	def getIdNumber(self):
 		return self.__idNumber
