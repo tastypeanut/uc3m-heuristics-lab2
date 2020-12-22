@@ -174,7 +174,7 @@ def main():
     #satellitelistgoal.append(Satellite.satellite(2,2,7,"charge",listenergy))
 
     observationliststart = []
-    
+    observationliststart.append(Observation.observation(3, 2, 0))
     observationliststart.append (Observation.observation(1,1,4))
     observationliststart.append(Observation.observation(3, 2, 2))
     

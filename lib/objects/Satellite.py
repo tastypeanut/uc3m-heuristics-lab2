@@ -18,6 +18,9 @@ class satellite:
 
 
 #CONSTRUCTOR
+#------------------------------------------------------------------------------------------------------------------------------
+
+
 
 #it receives and id, position, band, last activity and a list with the energy levels (costs and initial energy of the satellite)
 	def __init__(self, idNumber, band, position, activity, energyCostList):
@@ -34,6 +37,7 @@ class satellite:
 
 
 	#CHANGE BAND
+ #------------------------------------------------------------------------------------------------------------------------------	
 
 	#this method performs the activity of changing the band of a satellite. 
 	#It is important to take into account that, in the case of the SAT1, we are assuming that it can always access the current band and one less (__band - 1)
@@ -63,6 +67,7 @@ class satellite:
 
 
 	#CHARGE
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	#method that charges the satellite's energy
 	def charge(self):
@@ -75,6 +80,7 @@ class satellite:
 
 
 	#MEASURE
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	#this method simply allows the satellite to take a measurent if it does not have one at the moment
 	def measure(self,observation):
@@ -92,6 +98,7 @@ class satellite:
 
 
 	#DOWNLINK
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	#when a satellite downlinks the observation (if it has one), we set its variable to "false" and substract the cost
 	def downlink (self):
@@ -107,6 +114,7 @@ class satellite:
 
 	
 	#IDDLE
+ 	#------------------------------------------------------------------------------------------------------------------------------
 
 	#this method simply changes the activity variable to "iddle"
 	def iddle(self):
@@ -118,6 +126,7 @@ class satellite:
 
 
 	#SETTERS
+	#------------------------------------------------------------------------------------------------------------------------------	
 	
 	def setIdNumber(self, idNumber):
 		self.__idNumber = idNumber
@@ -149,6 +158,7 @@ class satellite:
 	
 
 	#GETTERS
+	#------------------------------------------------------------------------------------------------------------------------------
 
 	def getIdNumber(self):
 		return self.__idNumber

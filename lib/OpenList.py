@@ -7,6 +7,7 @@ class openlist:
 
 
     #CONSTRUCTOR
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #it does not receive any parameters, and it initializes the root node
     def __init__(self): 
@@ -17,6 +18,7 @@ class openlist:
 
 
     #INSERT AT EVALUATION    
+    #------------------------------------------------------------------------------------------------------------------------------ 
     
     #this method inserts a node in the open list depending on its evaluation value (from smaller to greater)
     def insertAtEvaluation(self, newElem):
@@ -44,6 +46,7 @@ class openlist:
 
 
     #PULL FIRST
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #method that extracts the first node from the list and retuns it
     def pullFirst(self):
@@ -55,6 +58,7 @@ class openlist:
 
 
     #ADD FIRST
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #method that adds a new node at the beggining of the list
 
@@ -68,6 +72,7 @@ class openlist:
 
 
     #ADD LAST
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
      #method that adds a new node at the end of the list
 
@@ -83,7 +88,9 @@ class openlist:
         else: lastNode.setNextNode(newNode)
 
 
+
     #IS EMPTY
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #checking if the open list is empty. It returns false in that case
     def isEmpty(self):
@@ -92,6 +99,7 @@ class openlist:
 
 
     #GET SIZE
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #it returns the size of the list
     def getSize(self):
@@ -105,6 +113,7 @@ class openlist:
 
 
     #GET ROOT NODE
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #returning the root node
     def getRootNode(self):
@@ -113,6 +122,7 @@ class openlist:
 
 
     #SET ROOT NODE
+    #------------------------------------------------------------------------------------------------------------------------------ 
 
     #species which is the root node
     def setRootNode(self, rootnode):
