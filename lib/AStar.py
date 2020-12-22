@@ -19,13 +19,16 @@ class astar:
     __goalNode = None #goal node
     __findGoal = None #this variable is used to check if the goal has been found
     __heuristicType = None  #heuristic type that has to be calculated
+    __totalCost = None #total cost from reaching the goal state
    
+    counter = 0     #auxuliary counter used for printing the step number
+
 
 
     #CONSTRUCTOR
     #------------------------------------------------------------------------------------------------------------------------------ 
 
-    #it receives the initial and goal states
+    #it receives the initial and goal states and the heuristic types 
     def __init__(self, initialNode, goalNode, heuristicType):
     
        
@@ -33,6 +36,7 @@ class astar:
         self.setGoalNode(goalNode)
         self.setFindGoal(False)  #the findGoal variable is set to "false" 
         self.setHeuristicType(heuristicType)
+        self.setTotalCost(0) #the initial total cost is 0
        
 
 
@@ -56,7 +60,7 @@ class astar:
 
         
 
-
+    
     #ADD ADJACENT 
     #------------------------------------------------------------------------------------------------------------------------------
     
@@ -73,27 +77,32 @@ class astar:
                 elif (satellite.getPosition() >= 23 or satellite.getPosition() < 0):
                     satellite.setPosition(0)
                 
-            #satellite.setObservation(None)      #setting the observations to "None"          #REMOVE THIS!!!          
-            print("Satellite {0} position is : {1}".format(satellite.getIdNumber(),satellite.getPosition()))        #printing current position
+            if(satellite.getIdNumber() == 1):         
+                print("{0}.".format(self.counter), end='')        #printing current position
+            self.counter = self.counter + 0.5
 
             
         for satellite in satelliteList:  #moving through the list of satellites to 
             childNode = Node.node(currentNode)
             satellite.setHasStartedMoving(True)
-            if (satellite.getPosition() > 11):  #satellites can only do activies from 0 to 11 
+               
+            print("SAT{0}: ".format(satellite.getIdNumber()), end='')        #printing SAT Id number   
+
+            if (satellite.getPosition() > 11):  #satellites can only do activies from 0 to 11       #CASE FOR POSITION > 11
                  satellite.iddle()   #the satellite performs the downlinking of the observation
-                    #childNode = Node.node(currentNode)
+                 if(satellite.getIdNumber() == 1):
+                    print("IDLE, ", end='') #printing a comma if it is SAT1
+                 if(satellite.getIdNumber() == 2):
+                    print("IDLE ") #printing a new line if it is SAT2
+
                  if (self.checkNode(childNode)):         #checking if the node has already been expanded
                     self.createChildNode(currentNode, childNode, satelliteList, observationList)
-                 continue  #it won't do anything during this time
-               
-            print("SAT: {0}".format(satellite.getIdNumber()))                                   #REMOVE THIS!!!
+                 continue  #it won't do anything during this time                        
             countObservations = 0   #auxiliary variable to count the number of observations
-            for observation in observationList:     #moving through the list of observations
-                #childNode = Node.node(currentNode)  #creating  child node
 
-                
-               # print("Observation position is : {0}".format(observation.getPosition()))       #REMOVE THIS!!!
+            
+            for observation in observationList:     #moving through the list of observations
+            
 
                 #MEASURE
 
@@ -105,8 +114,13 @@ class astar:
                         if (satellite.getIdNumber() == 1):      # CASE for SAT 1
                             if(satellite.getBand() == observation.getBand() or satellite.getBand() - 1 == observation.getBand()):   #it can access its current band an one below
                                 satellite.measure(observation)  #measuring
-                                print("CASE 1: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
-                                #childNode = Node.node(currentNode)
+                                self.setTotalCost(self.getTotalCost() + satellite.states.measurement) #updating total cost
+    
+                                if(satellite.getIdNumber() == 1):
+                                    print("Measure O{0}, ".format(observation.getIdNumber()), end='')#printing a comma if it is SAT1
+                                if(satellite.getIdNumber() == 2):
+                                    print("Measure O{0} ".format(observation.getIdNumber())) #printing a new line if it is SAT2
+
                                 if (self.checkNode(childNode)):     #checking if the node has already been expanded
                                     self.createChildNode(currentNode, childNode, satelliteList, observationList)
                                     break      #it has already done an activity, so the rest do not need to be checked
@@ -114,8 +128,13 @@ class astar:
                         if (satellite.getIdNumber() == 2):      #CASE for SAT 2
                             if (satellite.getBand() == observation.getBand() or satellite.getBand() + 1 == observation.getBand()):  #it can access its current band an one above
                                 satellite.measure(observation)  #measuring
-                                print("CASE 2: observation {0} is measured by satellite {1} ".format(observation.getIdNumber(), satellite.getIdNumber()))
-                                #childNode = Node.node(currentNode)
+                                self.setTotalCost(self.getTotalCost() + satellite.states.measurement) #updating total cost
+                                
+                                if(satellite.getIdNumber() == 1):
+                                    print("Measure O{0}, ".format(observation.getIdNumber()), end='')#printing a comma if it is SAT1
+                                if(satellite.getIdNumber() == 2):
+                                    print("Measure O{0} ".format(observation.getIdNumber())) #printing a new line if it is SAT2
+
                                 if (self.checkNode(childNode)):     #checking if the node has already been expanded
                                     self.createChildNode(currentNode, childNode, satelliteList, observationList)
                                     break      #it has already done an activity, so the rest do not need to be checked
@@ -124,10 +143,14 @@ class astar:
                 #DOWLINK    
 
                 elif (satellite.getActivity() == "measurement" and satellite.getEnergy() >= satellite.states.downlink):    #the last activity performed by the satellite was "measure", so now it needs to downlink the observation
-                    obs = satellite.getObservation()    #the observation that is going to be downlinked
                     satellite.downlink()   #the satellite performs the downlinking of the observation
-                    print("CASE 3: observation {0} is downlinked by satellite {1} ".format(obs.getIdNumber(), satellite.getIdNumber()))
-                    #childNode = Node.node(currentNode)
+                    self.setTotalCost(self.getTotalCost() + satellite.states.downlink) #updating total cost
+                   
+                    if(satellite.getIdNumber() == 1):
+                        print("Downlink O{0}, ".format(observation.getIdNumber()), end='')     #printing a comma if it is SAT1
+                    if(satellite.getIdNumber() == 2):
+                            print("Downlink O{0} ".format(observation.getIdNumber())) #printing a new line if it is SAT2
+
                     if (self.checkNode(childNode)):         #checking if the node has already been expanded
                         self.createChildNode(currentNode, childNode, satelliteList, observationList)
                         break      #it has already done an activity, so the rest do not need to be checked
@@ -142,8 +165,13 @@ class astar:
                 elif (satellite.getEnergy() < satellite.states.measurement or satellite.getEnergy() <  satellite.states.downlink):  
 
                     satellite.charge()  #charging
-                    print("CASE 4: Satellite {0} is charging ".format(satellite.getIdNumber()))
-                    #childNode = Node.node(currentNode)
+                    self.setTotalCost(self.getTotalCost() + satellite.states.charge) #updating total cost
+                    
+                    if(satellite.getIdNumber() == 1):
+                        print("Charge, ", end='')   #printing a comma if it is SAT1
+                    if(satellite.getIdNumber() == 2):
+                        print("Charge ")   #printing a new line if it is SAT2
+
                     if (self.checkNode(childNode)):         #checking if the node has already been expanded
                         self.createChildNode(currentNode, childNode, satelliteList, observationList)
                         break       #it has already done an activity, so the rest do not need to be checked
@@ -158,8 +186,13 @@ class astar:
                 and ((satellite.getPosition() +1 != observation.getPosition() and not(observation.getMeasured())) )):
                    
                     satellite.turn()    #turning
-                    print("CASE 5: Satellite {0} is turning ".format(satellite.getIdNumber()))
-                    #childNode = Node.node(currentNode)
+                    self.setTotalCost(self.getTotalCost() + satellite.states.turn) #updating total cost
+
+                    if(satellite.getIdNumber() == 1):
+                        print("Turn, ", end='')    #printing a comma if it is SAT1
+                    if(satellite.getIdNumber() == 2):
+                        print("Turn ")  #printing a new line if it is SAT2
+
                     if (self.checkNode(childNode)):         #checking if the node has already been expanded
                         self.createChildNode(currentNode, childNode, satelliteList, observationList)
                         break       #it has already done an activity, so the rest do not need to be checked   
@@ -167,23 +200,29 @@ class astar:
                  
 
                 
-                #IDDLE                  
+                #IDLE                  
 
                 #in any other case, it do nothing
                 else:#(satellite.getEnergy() >= satellite.states.turn and satellite.getActivity() != "measurement" and satellite.getPosition() != observation.getPosition()):
                     if(countObservations == len(observationList) -1):   #we only want it to be "iddle" if it's the last observation from the list (in IDDLE we are not including "break")
                         satellite.iddle()       #do nothing
-                        print("CASE 6: satellite {0} is iddle ".format(satellite.getIdNumber()))
-                        #childNode = Node.node(currentNode)
+
+                        if(satellite.getIdNumber() == 1):
+                            print("IDLE, ", end='') #printing a comma if it is SAT1
+                        if(satellite.getIdNumber() == 2):
+                            print("IDLE ") #printing a new line if it is SAT2      
+
                         if (self.checkNode(childNode)):  #checking if the node has already been expanded
                             self.createChildNode(currentNode, childNode, satelliteList, observationList)
                         
                                    
-                                
+
+
                                 
                 
                 countObservations = countObservations + 1  #updaating auxiliary counter
 
+        
         self.__openList.insertAtEvaluation(childNode)       #inserting the child node into the open list, taking into account its evaluation value
 
 
@@ -198,7 +237,7 @@ class astar:
             childNode.setNextNode(None)         #the next node is currently null
             childNode.setListSatellites(newListSatellites)
             childNode.setListObservations(newListObservations)
-            childNode.computeHeuristic(None,self.__heuristicType)  #computing heurstic        
+            childNode.computeHeuristic(self.__goalNode,self.__heuristicType)  #computing heurstic        
             childNode.computeEvaluation()       #computing evalution
            # print("OpenList size was:{0}".format(self.__openList.getSize()))                #REMOVE!!!
             #self.__openList.insertAtEvaluation(childNode)       #inserting in the open list taking into account the evaluation
@@ -224,11 +263,11 @@ class astar:
             if(self.isGoalNode(currentNode)):  #checking if its the goal node
                 print("IT HAS FOUND THE GOAL NODE")
                 self.setGoalNode(currentNode) 
-                for node in self.getPath(currentNode):
-                    for satellite in node.getListSatellites():
-                        print("------")
-                        print(satellite.getActivity())
-                        print("------")
+                #for node in self.getPath(currentNode):
+                    #for satellite in node.getListSatellites():
+                       # print("------")
+                        #print(satellite.getActivity())                                         #REMOVE!!!
+                        #print("------")
                 print("Length of solution path: {0}".format(len(self.getPath(currentNode))))
                 self.setFindGoal(True)
                 break                   #as the  goal has been found, we can stop
@@ -334,6 +373,9 @@ class astar:
     def setHeuristicType(self, heuristicType):
         self.__heuristicType = heuristicType
 
+    def setTotalCost(self,totalCost):
+        self.__totalCost = totalCost
+
 
     
         
@@ -352,6 +394,8 @@ class astar:
     def getClosedList(self):
         return self.__closedList
 
-    
     def getHeuristicType(self):
         return self.__heuristicType
+
+    def getTotalCost(self):
+        return self.__totalCost

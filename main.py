@@ -54,8 +54,9 @@ def main():
     stdout_fileno = sys.stdout
     sys.stdout = open('{0}.output'.format(sys.argv[1]), 'w')
     statoutput = open('{0}.statistics'.format(sys.argv[1]), 'w')
-    print("Total execution time: ", astar.algorithm(), " seconds.", file=statoutput)  #calling the A* algorithm method
-    print("#Steps: ", astar.getPath(astar.getGoalNode()), file=statoutput)
+    print("Overall time: ", astar.algorithm(), " seconds.", file=statoutput)  #calling the A* algorithm method          #CHECK!!!
+    print("Overall cost: ", astar.getTotalCost(), file=statoutput)  #calling the A* algorithm method
+    print("#Steps: ", len(astar.getPath(astar.getGoalNode())), file=statoutput)
    # print("#Expansions: ", astar.getCountExpansion(), file = statoutput) 
     sys.stdout.close()
     sys.stdout = stdout_fileno

@@ -74,9 +74,8 @@ class satellite:
 		self.setEnergy(self.__energy + self.states.charge)
 		if self.__capacity < self.__energy:		#the energy levels cannot be larger than the capacity
 			self.setEnergy(self.__capacity)
-		#else: self.iddle()
 		#self.__activity = "charge"       #updating the state to charge
-		print("Charging with energy: {0}".format(self.__energy))
+
 
 
 	#MEASURE
@@ -113,7 +112,7 @@ class satellite:
 
 
 	
-	#IDDLE
+	#IDLE
  	#------------------------------------------------------------------------------------------------------------------------------
 
 	#this method simply changes the activity variable to "iddle"

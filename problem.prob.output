@@ -1,4 +1,62 @@
-Satellite 1 position is : 0
-Satellite 2 position is : 0
-SAT: 1
-CASE 5: Satellite 1 is turning 
+0.SAT1: Turn, SAT2: Measure O1 
+1.0.SAT1: Charge, SAT2: Downlink O1 
+2.0.SAT1: Turn, SAT2: Turn 
+3.0.SAT1: Charge, SAT2: Turn 
+4.0.SAT1: Turn, SAT2: Turn 
+5.0.SAT1: Charge, SAT2: Turn 
+6.0.SAT1: Turn, SAT2: IDLE 
+7.0.SAT1: Charge, SAT2: IDLE 
+8.0.SAT1: Turn, SAT2: Turn 
+9.0.SAT1: Charge, SAT2: Turn 
+10.0.SAT1: Turn, SAT2: Charge 
+11.0.SAT1: Charge, SAT2: Turn 
+12.0.SAT1: IDLE, SAT2: IDLE 
+13.0.SAT1: IDLE, SAT2: IDLE 
+14.0.SAT1: IDLE, SAT2: IDLE 
+15.0.SAT1: IDLE, SAT2: IDLE 
+16.0.SAT1: IDLE, SAT2: IDLE 
+17.0.SAT1: IDLE, SAT2: IDLE 
+18.0.SAT1: IDLE, SAT2: IDLE 
+19.0.SAT1: IDLE, SAT2: IDLE 
+20.0.SAT1: IDLE, SAT2: IDLE 
+21.0.SAT1: IDLE, SAT2: IDLE 
+22.0.SAT1: IDLE, SAT2: IDLE 
+23.0.SAT1: IDLE, SAT2: IDLE 
+24.0.SAT1: Turn, SAT2: Charge 
+25.0.SAT1: Charge, SAT2: Turn 
+26.0.SAT1: Turn, SAT2: Charge 
+27.0.SAT1: Charge, SAT2: Turn 
+28.0.SAT1: Turn, SAT2: Charge 
+29.0.SAT1: Charge, SAT2: Turn 
+30.0.SAT1: Turn, SAT2: Charge 
+31.0.SAT1: Charge, SAT2: IDLE 
+32.0.SAT1: Turn, SAT2: Turn 
+33.0.SAT1: Charge, SAT2: Charge 
+34.0.SAT1: Turn, SAT2: Turn 
+35.0.SAT1: Charge, SAT2: Charge 
+36.0.SAT1: IDLE, SAT2: IDLE 
+37.0.SAT1: IDLE, SAT2: IDLE 
+38.0.SAT1: IDLE, SAT2: IDLE 
+39.0.SAT1: IDLE, SAT2: IDLE 
+40.0.SAT1: IDLE, SAT2: IDLE 
+41.0.SAT1: IDLE, SAT2: IDLE 
+42.0.SAT1: IDLE, SAT2: IDLE 
+43.0.SAT1: IDLE, SAT2: IDLE 
+44.0.SAT1: IDLE, SAT2: IDLE 
+45.0.SAT1: IDLE, SAT2: IDLE 
+46.0.SAT1: IDLE, SAT2: IDLE 
+47.0.SAT1: IDLE, SAT2: IDLE 
+48.0.SAT1: Turn, SAT2: Measure O2 
+49.0.SAT1: Charge, SAT2: Charge 
+50.0.SAT1: IDLE, SAT2: Downlink O1 
+51.0.SAT1: IDLE, SAT2: Charge 
+52.0.SAT1: IDLE, SAT2: Turn 
+53.0.SAT1: IDLE, SAT2: Charge 
+54.0.SAT1: IDLE, SAT2: IDLE 
+55.0.SAT1: Measure O3, SAT2: IDLE 
+56.0.SAT1: Charge, SAT2: IDLE 
+57.0.SAT1: Downlink O1, SAT2: Measure O4 
+58.0.SAT1: Charge, SAT2: Charge 
+59.0.SAT1: IDLE, SAT2: Downlink O1 
+IT HAS FOUND THE GOAL NODE
+Length of solution path: 61
