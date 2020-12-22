@@ -14,10 +14,11 @@ def main():
     try:
         fileraw = open(sys.argv[1], 'r')
     except:
-        print(Back.RED + " Error happened when opening the file " + Style.RESET_ALL)
+        print(Back.RED + " Error happened when opening the input file " + Style.RESET_ALL)
         exit(1)
 
     filelinelist = fileraw.read().split('\n')
+    fileraw.close()
 
     observationliststart = []
     satelliteliststart = []
@@ -30,7 +31,7 @@ def main():
             obscoordlist = list(map(int, obscoord.split(',')))
             observationliststart.append(Observation.observation(idcounter, obscoordlist[0], obscoordlist[1]))
             #print("obs", idcounter, obscoordlist[0], obscoordlist[1])
-            
+
         idcounter = 0
 
         for position in range(1, len(filelinelist)):
@@ -42,16 +43,19 @@ def main():
     except:
         print(Back.RED + " Object creation failed: Invalid file contents " + Style.RESET_ALL)
         exit(1)
-    
+
     satellitelistgoal = []
     observationlistgoal = []
 
     InitialNode = Node.node(None, satelliteliststart, observationliststart)
     FinalNode = Node.node(None, satellitelistgoal, observationlistgoal)
     astar = AStar.astar(InitialNode, FinalNode)
-    astar.algorithm()
 
-    fileraw.close()
+    stdout_fileno = sys.stdout
+    sys.stdout = open('{0}.output'.format(sys.argv[1]), 'w')
+    astar.algorithm()
+    sys.stdout.close()
+    sys.stdout = stdout_fileno
 
 
 
